@@ -5,7 +5,7 @@
 /server/build
 /server/.env
 
-/client/next
+/client/.next
 /client/node_modules
 /client/.pnp
 /client.pnp.js
@@ -23,8 +23,8 @@
 /server/lerna-debug.log*
 
 # Tests
-/server//coverage
-/server//.nyc_output
+/server/coverage
+/server/.nyc_output
 
 
 # IDE - VSCode
