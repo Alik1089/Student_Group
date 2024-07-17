@@ -1,26 +1,45 @@
+import { Repository } from 'typeorm';
+import { Course } from './entities/course.entity';
 import { Injectable } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class CourseService {
-  create(createCourseDto: CreateCourseDto) {
-    return 'This action adds a new course';
+  constructor(
+    @InjectRepository(Course) private courseRepository:Repository<Course>,
+  ) {}
+
+  async create(createCourseDto: CreateCourseDto) {
+    const {name} = createCourseDto;
+    const corect = await this.courseRepository.findOneBy({name});
+    if(corect) return {message: name+" has already"}
+
+    return await this.courseRepository.save(createCourseDto);
   }
 
-  findAll() {
-    return `This action returns all course`;
+  async findAll() {
+    return await this.courseRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} course`;
+  async CourseModules(id: number) {
+    const coursesData =  await this.courseRepository.find({
+      where:{
+        id
+      },
+      relations:{
+        module:true,
+      }
+    })
+    return coursesData ? coursesData : {message:"course not found"}
   }
 
-  update(id: number, updateCourseDto: UpdateCourseDto) {
-    return `This action updates a #${id} course`;
+  async update(id: number, updateCourseDto: UpdateCourseDto) {
+    return await this.courseRepository.update(id,updateCourseDto)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} course`;
+  async remove(id: number) {
+    return await this.courseRepository.delete(id);
   }
 }

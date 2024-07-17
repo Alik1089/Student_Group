@@ -1,1 +1,9 @@
-export class CreateTeacherDto {}
+import { ApiProperty } from "@nestjs/swagger";
+
+export class CreateTeacherDto {
+    @ApiProperty()
+    userId:number
+  
+    @ApiProperty()
+    salary:number
+}

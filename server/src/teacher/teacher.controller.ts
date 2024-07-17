@@ -1,8 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { RolesGuard } from './../auth/roles.guard';
+import { AuthGuard } from '@nestjs/passport';
+import { Role } from 'src/users/entities/role.enum';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { TeacherService } from './teacher.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
-import {ApiTags} from "@nestjs/swagger"
+import {ApiBearerAuth, ApiResponse, ApiTags} from "@nestjs/swagger"
+import { HasRoles } from 'src/auth/has-roles.decorator';
 @ApiTags('teacher')
 @Controller('teacher')
 export class TeacherController {
@@ -13,6 +17,10 @@ export class TeacherController {
     return this.teacherService.create(createTeacherDto);
   }
 
+  @HasRoles(Role.ADMIN)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({description:"user deleted admin"})
+  @ApiBearerAuth('JWT-auth')
   @Get()
   findAll() {
     return this.teacherService.findAll();

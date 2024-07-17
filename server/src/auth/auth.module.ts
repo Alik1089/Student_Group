@@ -1,3 +1,7 @@
+import { Student } from './../student/entities/student.entity';
+import { Teacher } from './../teacher/entities/teacher.entity';
+import { User } from './../users/entities/user.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -20,7 +24,7 @@ import { RolesGuard } from './roles.guard';
     JwtModule.register({
       secret: process.env.JWT_CONSTANTS,
       signOptions: { expiresIn: '1h' },
-    }),
+    })
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy, RolesGuard],

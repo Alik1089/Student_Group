@@ -20,8 +20,6 @@ export class Group {
   name: string;
 
   @Column()
-  studentId: number;
-  @Column()
   teacherId: number;
 
   @Column()
@@ -38,6 +36,5 @@ export class Group {
   homework: Homework[];
 
   @OneToMany((type) => Student, (student) => student.group)
-  @JoinColumn({name:"studentId"})
   student: Student[];
 }

@@ -5,27 +5,49 @@ import {
   Post,
   Request,
   UseGuards,
+  Delete
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { Login } from 'src/users/dto/update-user.dto';
 import { HasRoles } from './has-roles.decorator';
 import { Role } from 'src/users/entities/role.enum';
 import { RolesGuard } from './roles.guard';
+import { UsersService } from 'src/users/users.service';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService,
+    private readonly usersService: UsersService) {}
 
+  // @HasRoles(Role.ADMIN)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @ApiBearerAuth('JWT-auth')
+  // @Post('register')
+  // register(@Request() req) {
+  //   return req.user;
+  // }
+  
   @HasRoles(Role.ADMIN)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({description:"user added admin"})
   @ApiBearerAuth('JWT-auth')
-  @Post('register')
-  register(@Request() req) {
-    return req.user;
+  @Post("add_user")
+  async register(@Body() user:CreateUserDto){
+    return this.usersService.create(user)
   }
+
+  // @HasRoles(Role.ADMIN)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @ApiResponse({description:"user deleted admin"})
+  // @ApiBearerAuth('JWT-auth')
+  // @Delete("delete")
+  // async delete(@Body() id:number){
+  //   return this.usersService.remove11(id)
+  // }
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
@@ -48,13 +70,5 @@ export class AuthController {
     return req.user;
   }
 
-  // @Roles(Role.Admin)
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @ApiTags('Admin')
-  // @ApiOperation({ summary: 'Get admin section' })
-  // @Get('admin')
-  // @ApiBearerAuth('JWT-auth') // This is the one that needs to match the name in main.ts
-  // getAdminArea(@Request() req) {
-  //   return req.user;
-  // }
+
 }
