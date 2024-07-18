@@ -23,6 +23,9 @@ export class Student {
   @OneToMany((type) => Greate, (greate) => greate.student)
   rate: Greate[];
 
-  @ManyToOne((type) => Group, (group) => group.student)
+  @ManyToOne((type) => Group, (group) => group.student, {
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   group: Group;
 }

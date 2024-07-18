@@ -23,12 +23,18 @@ export class Group {
   teacherId: number;
 
   @Column()
-  count: string;
+  count: number;
 
-  @ManyToOne((type) => Model, (module) => module.group)
+  @ManyToOne((type) => Model, (module) => module.group, {
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   module: Model;
 
-  @ManyToOne((type) => Teacher, (teacher) => teacher.group)
+  @ManyToOne((type) => Teacher, (teacher) => teacher.group, {
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   @JoinColumn({name:"teacherId"})
   teacher: Teacher;
 

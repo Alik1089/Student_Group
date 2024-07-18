@@ -14,8 +14,8 @@ export class CourseService {
   async create(createCourseDto: CreateCourseDto) {
     const {name} = createCourseDto;
     const corect = await this.courseRepository.findOneBy({name});
+    
     if(corect) return {message: name+" has already"}
-
     return await this.courseRepository.save(createCourseDto);
   }
 

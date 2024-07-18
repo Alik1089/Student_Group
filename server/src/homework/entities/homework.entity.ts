@@ -20,10 +20,16 @@ export class Homework {
   @Column()
   count: string;
 
-  @ManyToOne((type) => Group, (group) => group.homework)
+  @ManyToOne((type) => Group, (group) => group.homework, {
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   group: Group;
 
-  @ManyToOne((type) => Teacher, (teacher) => teacher.homework)
+  @ManyToOne((type) => Teacher, (teacher) => teacher.homework, {
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   teacher: Teacher;
 
   @OneToMany((type) => Greate, (greate) => greate.homework)

@@ -10,7 +10,10 @@ export class Model {
   @Column()     
   name: string;
 
-  @ManyToOne((type) => Course, (course) => course.module)
+  @ManyToOne((type) => Course, (course) => course.module, {
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   course: Course;
 
   @OneToMany((type) => Group, (group) => group.module)
