@@ -1,5 +1,5 @@
+import { Rate } from './../../rate/entities/rate.entity'
 import { Group } from './../../group/entities/group.entity';
-import { Greate } from './../../great/entities/great.entity';
 import { User } from './../../users/entities/user.entity';
 import {
   Entity,
@@ -16,16 +16,19 @@ export class Student {
   @PrimaryColumn()
   userId: number;
 
-  @OneToOne((type) => User, (user) => user.student)
+  @OneToOne((type) => User, (user) => user.student,{
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   @JoinColumn({name:"userId"})
   user: User;
-
-  @OneToMany((type) => Greate, (greate) => greate.student)
-  rate: Greate[];
 
   @ManyToOne((type) => Group, (group) => group.student, {
     onDelete:"CASCADE",
     onUpdate:"CASCADE"
   })
   group: Group;
+
+  @OneToMany((type) => Rate, (rate) => rate.student, {})
+  rate:Rate
 }

@@ -1,9 +1,9 @@
-import { ApiProperty } from "@nestjs/swagger"
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateModuleDto {
-        @ApiProperty()
-        name:string
-    
-        @ApiProperty()
-        courseId:number
+  @ApiProperty()
+  name: string;
+
+  @ApiProperty()
+  courseId: number;
 }

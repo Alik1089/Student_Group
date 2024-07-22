@@ -20,13 +20,14 @@ export class Teacher {
   @Column()
   salary: number;
 
-  @OneToOne((type) => User, (user) => user.teacher)
+  @OneToOne((type) => User, (user) => user.teacher, {
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   @JoinColumn({name:"userId"})
   user: User;
 
   @OneToMany((type) => Group, (group) => group.teacher)
   group: Group[];
 
-  @OneToMany((type) => Homework, (homework) => homework.teacher)
-  homework: Homework[];
 }

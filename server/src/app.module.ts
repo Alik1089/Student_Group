@@ -1,4 +1,3 @@
-import { Greate } from './great/entities/great.entity';
 import { Homework } from './homework/entities/homework.entity';
 import { Group } from './group/entities/group.entity';
 import { Course } from './course/entities/course.entity';
@@ -16,10 +15,11 @@ import { CourseModule } from './course/course.module';
 import { ModuleModule } from './module/module.module';
 import { GroupModule } from './group/group.module';
 import { HomeworkModule } from './homework/homework.module';
-import { GreatModule } from './great/great.module';
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { RateModule } from './rate/rate.module';
+import { Rate } from './rate/entities/rate.entity';
 
 @Module({
   imports: [
@@ -34,7 +34,7 @@ import { ConfigModule } from '@nestjs/config';
       username: 'root',
       password: '',
       database: 'university',
-      entities: [User, Student, Teacher, Course, Model, Group, Homework, Greate],
+      entities: [User, Student, Teacher, Course, Model, Group, Homework,Rate],
       synchronize: true
     }),
     AuthModule,
@@ -44,8 +44,8 @@ import { ConfigModule } from '@nestjs/config';
     CourseModule,
     ModuleModule,
     GroupModule,
+    RateModule,
     HomeworkModule,
-    GreatModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -27,8 +27,22 @@ export class ModuleService {
     return `This action returns all module`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} module`;
+  async findOne(id: number) {
+    const module = await this.moduleRepository.findOneBy({id})
+    if(module){
+      return module
+    }else{return "Module id is wrong"}
+  }
+
+  async findAllByCourseId(id:number){
+    const course = await this.courseRepository.findOneBy({id})
+    if(course){
+      return this.moduleRepository.find({
+        where:{
+          courseId:id
+        }
+      })
+    }else{return "Course id is wrong"}
   }
 
   async update(id: number, updateModuleDto: UpdateModuleDto) {

@@ -1,9 +1,10 @@
-import { Greate } from './../../great/entities/great.entity';
+import { Rate } from './../../rate/entities/rate.entity';
 import { Teacher } from './../../teacher/entities/teacher.entity';
 import { Group } from './../../group/entities/group.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -18,20 +19,20 @@ export class Homework {
   name: string;
 
   @Column()
-  count: string;
+  groupId: number;
+
 
   @ManyToOne((type) => Group, (group) => group.homework, {
     onDelete:"CASCADE",
     onUpdate:"CASCADE"
   })
+  @JoinColumn({name:"groupId"})
   group: Group;
 
-  @ManyToOne((type) => Teacher, (teacher) => teacher.homework, {
+  @OneToMany((type) => Rate, (rate) => rate.homework, {
     onDelete:"CASCADE",
     onUpdate:"CASCADE"
   })
-  teacher: Teacher;
+  rate:Rate
 
-  @OneToMany((type) => Greate, (greate) => greate.homework)
-  greate: Greate[];
 }

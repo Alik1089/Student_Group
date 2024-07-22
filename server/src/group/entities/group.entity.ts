@@ -38,9 +38,15 @@ export class Group {
   @JoinColumn({name:"teacherId"})
   teacher: Teacher;
 
-  @OneToMany((type) => Homework, (homework) => homework.group)
+  @OneToMany((type) => Homework, (homework) => homework.group,  {
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   homework: Homework[];
 
-  @OneToMany((type) => Student, (student) => student.group)
+  @OneToMany((type) => Student, (student) => student.group,  {
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   student: Student[];
 }

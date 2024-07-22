@@ -42,8 +42,27 @@ export class ModuleController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.moduleService.findOne(+id);
+  async findOne(@Param('id') id: string,@Res() res: Response) {
+    try {
+      const data = await this.moduleService.findOne(+id);
+      return res.status(HttpStatus.CREATED).json(data);
+    } catch (e) {
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: e.message, error: true });
+    }
+  }
+
+  @Get("course/:id")
+  async findAllByCourseId(@Param('id') id: string,@Res() res: Response){
+    try {
+      const data = await this.moduleService.findAllByCourseId(+id);
+      return res.status(HttpStatus.CREATED).json(data);
+    } catch (e) {
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: e.message, error: true });
+    }
   }
 
   // @HasRoles(Role.ADMIN)

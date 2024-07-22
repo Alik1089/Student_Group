@@ -44,9 +44,15 @@ export class User {
   @Column()
   phoneNumber: string;
   
-  @OneToOne((type) => Student, (student) => student.user)
+  @OneToOne((type) => Student, (student) => student.user,{
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   student: Student;
 
-  @OneToOne((type) => Teacher, (teacher) => teacher.user)
+  @OneToOne((type) => Teacher, (teacher) => teacher.user,{
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   teacher: Teacher;
 }
