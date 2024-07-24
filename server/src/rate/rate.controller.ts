@@ -1,4 +1,6 @@
-import { IRateRemove } from './../types/index';
+import { RolesGuard } from './../auth/roles.guard';
+import { AuthGuard } from '@nestjs/passport';
+import { Role } from './../users/entities/role.enum';
 import {
   Controller,
   Get,
@@ -9,16 +11,23 @@ import {
   Delete,
   HttpStatus,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { RateService } from './rate.service';
 import { CreateRateDto } from './dto/create-rate.dto';
 import { UpdateRateDto } from './dto/update-rate.dto';
 import { Response } from 'express';
+import { HasRoles } from 'src/auth/has-roles.decorator';
+import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 
 @Controller('rate')
 export class RateController {
   constructor(private readonly rateService: RateService) {}
 
+  @HasRoles(Role.TEACHER)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({description:"Homework add by teacher"})
+  @ApiBearerAuth('JWT-auth')
   @Post()
   async create(@Body() createRateDto: CreateRateDto, @Res() res: Response) {
     try {

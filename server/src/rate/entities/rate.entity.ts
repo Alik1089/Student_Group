@@ -13,10 +13,7 @@ export class Rate {
   @Column()
   rate:number
 
-  @ManyToOne((type) => Homework, (homework) => homework.rate, {
-    onDelete:"CASCADE",
-    onUpdate:"CASCADE"
-  })
+  @ManyToOne((type) => Homework, (homework) => homework.rate)
   homework: Homework;
 
 

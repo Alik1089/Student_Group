@@ -23,8 +23,8 @@ export class ModuleService {
     return 'Does not have that course';
   }
 
-  findAll() {
-    return `This action returns all module`;
+  async findAll() {
+    return  await this.moduleRepository.find();
   }
 
   async findOne(id: number) {

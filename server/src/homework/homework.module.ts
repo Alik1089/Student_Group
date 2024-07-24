@@ -1,3 +1,4 @@
+import { Model } from 'src/module/entities/module.entity';
 import { Group } from './../group/entities/group.entity';
 import { Homework } from './entities/homework.entity';
 import { Teacher } from './../teacher/entities/teacher.entity';
@@ -7,7 +8,7 @@ import { HomeworkService } from './homework.service';
 import { HomeworkController } from './homework.controller';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Homework,Group, Teacher])],
+  imports:[TypeOrmModule.forFeature([Homework,Group, Teacher, Model])],
   controllers: [HomeworkController],
   providers: [HomeworkService],
   exports:[HomeworkService]

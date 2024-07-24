@@ -20,11 +20,15 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { RateModule } from './rate/rate.module';
 import { Rate } from './rate/entities/rate.entity';
+import { ModuleGroupModule } from './module-group/module-group.module';
+import { ModuleGroup } from './module-group/entities/module-group.entity';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal:true,
+      isGlobal: true,
       envFilePath: `.env`,
     }),
     TypeOrmModule.forRoot({
@@ -33,10 +37,31 @@ import { Rate } from './rate/entities/rate.entity';
       port: 3306,
       username: 'root',
       password: '',
-      database: 'university',
-      entities: [User, Student, Teacher, Course, Model, Group, Homework,Rate],
-      synchronize: true
+      database: 'testu',
+      entities: [
+        User,
+        Student,
+        Teacher,
+        Course,
+        Model,
+        Group,
+        Homework,
+        Rate,
+        ModuleGroup,
+      ],
+      synchronize: true,
     }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        secure: false, // true for 465, false for other ports
+        auth: {
+          user: process.env.EMAIL_USER, // generated ethereal user
+          pass: process.env.EMAIL_PASS, // generated ethereal password
+        },
+      },
+    }),
+
     AuthModule,
     UsersModule,
     TeacherModule,
@@ -46,6 +71,8 @@ import { Rate } from './rate/entities/rate.entity';
     GroupModule,
     RateModule,
     HomeworkModule,
+    ModuleGroupModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

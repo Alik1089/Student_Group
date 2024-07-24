@@ -1,3 +1,6 @@
+import { RolesGuard } from './../auth/roles.guard';
+import { AuthGuard } from '@nestjs/passport';
+import { Role } from './../users/entities/role.enum';
 import {
   Controller,
   Get,
@@ -8,22 +11,24 @@ import {
   Delete,
   Res,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { ModuleService } from './module.service';
 import { CreateModuleDto } from './dto/create-module.dto';
 import { UpdateModuleDto } from './dto/update-module.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
+import { HasRoles } from 'src/auth/has-roles.decorator';
 
 @ApiTags('module')
 @Controller('module')
 export class ModuleController {
   constructor(private readonly moduleService: ModuleService) {}
 
-  // @HasRoles(Role.ADMIN)
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
-  // @ApiResponse({description:"user deleted admin"})
-  // @ApiBearerAuth('JWT-auth')
+  @HasRoles(Role.ADMIN)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({description:"Module create admin"})
+  @ApiBearerAuth('JWT-auth')
   @Post()
   async create(@Body() createModuleDto: CreateModuleDto, @Res() res: Response) {
     try {
@@ -65,10 +70,10 @@ export class ModuleController {
     }
   }
 
-  // @HasRoles(Role.ADMIN)
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
-  // @ApiResponse({description:"user deleted admin"})
-  // @ApiBearerAuth('JWT-auth')
+  @HasRoles(Role.ADMIN)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({description:"Module update admin"})
+  @ApiBearerAuth('JWT-auth')
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateModuleDto: UpdateModuleDto, @Res() res: Response) {
     try {
@@ -81,10 +86,10 @@ export class ModuleController {
     }
   }
 
-  // @HasRoles(Role.ADMIN)
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
-  // @ApiResponse({description:"user deleted admin"})
-  // @ApiBearerAuth('JWT-auth')
+  @HasRoles(Role.ADMIN)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({description:"Module deleted admin"})
+  @ApiBearerAuth('JWT-auth')
   @Delete(':id')
   async remove(@Param('id') id: string, @Res() res: Response) {
     try {

@@ -36,8 +36,8 @@ export class AuthController {
   @ApiResponse({description:"user added admin"})
   @ApiBearerAuth('JWT-auth')
   @Post("add_user")
-  async register(@Body() user:CreateUserDto){
-    return this.usersService.create(user)
+  async register(@Request() req,@Body() user:CreateUserDto){
+    return this.usersService.create(req,user)
   }
 
   // @HasRoles(Role.ADMIN)

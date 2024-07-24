@@ -1,3 +1,4 @@
+import { Model } from 'src/module/entities/module.entity';
 import { Teacher } from './../teacher/entities/teacher.entity';
 import { Group } from './../group/entities/group.entity';
 import { Homework } from './entities/homework.entity';
@@ -16,6 +17,8 @@ export class HomeworkService {
     private groupRepository: Repository<Group>,
     @InjectRepository(Teacher)
     private teacherRepository: Repository<Teacher>,
+    @InjectRepository(Model)
+    private modelRepository: Repository<Model>,
   ) {}
 
   async create(createHomeworkDto: CreateHomeworkDto) {
@@ -45,6 +48,13 @@ export class HomeworkService {
     } else {
       return 'Group is not defined';
     }
+  }
+
+  async findAllByModelId(id:number){
+    const homework = await this.homeworkRepository.find({where:{modelId:id}})
+    if (homework){
+      return homework
+    }else{return "homework is not found"}
   }
 
   async findOne(id: number) {

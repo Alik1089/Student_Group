@@ -1,4 +1,10 @@
-export interface IRateRemove {
-    studentId:number,
-    homeworkId:number
+export interface IUloadImage {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  destination: string;
+  filename: string;
+  path: string;
+  size: number;
 }

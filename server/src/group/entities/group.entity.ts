@@ -10,6 +10,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ModuleGroup } from 'src/module-group/entities/module-group.entity';
 
 @Entity()
 export class Group {
@@ -30,6 +31,12 @@ export class Group {
     onUpdate:"CASCADE"
   })
   module: Model;
+
+  @OneToMany((type) => ModuleGroup, (module) => module.group, {
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
+  modulegroup: ModuleGroup[];
 
   @ManyToOne((type) => Teacher, (teacher) => teacher.group, {
     onDelete:"CASCADE",

@@ -9,6 +9,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Model } from 'src/module/entities/module.entity';
 
 @Entity()
 export class Homework {
@@ -21,18 +22,19 @@ export class Homework {
   @Column()
   groupId: number;
 
+  @Column()
+  modelId:number
 
-  @ManyToOne((type) => Group, (group) => group.homework, {
-    onDelete:"CASCADE",
-    onUpdate:"CASCADE"
-  })
+
+  @ManyToOne((type) => Group, (group) => group.homework)
   @JoinColumn({name:"groupId"})
   group: Group;
 
-  @OneToMany((type) => Rate, (rate) => rate.homework, {
-    onDelete:"CASCADE",
-    onUpdate:"CASCADE"
-  })
+  @ManyToOne((type) => Model, (module) => module.homework)
+  @JoinColumn({name:"modelId"})
+  model: Model;
+
+  @OneToMany((type) => Rate, (rate) => rate.homework)
   rate:Rate
 
 }

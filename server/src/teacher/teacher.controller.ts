@@ -19,7 +19,7 @@ export class TeacherController {
 
   @HasRoles(Role.ADMIN)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @ApiResponse({description:"user deleted admin"})
+  @ApiResponse({description:"teacher show admin"})
   @ApiBearerAuth('JWT-auth')
   @Get()
   findAll() {
