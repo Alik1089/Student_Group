@@ -23,7 +23,7 @@ import { HasRoles } from 'src/auth/has-roles.decorator';
 @ApiTags('homework')
 @Controller('homework')
 export class HomeworkController {
-  constructor(private readonly homeworkService: HomeworkService) {}
+  constructor(private readonly homeworkService: HomeworkService) { }
 
   @HasRoles(Role.TEACHER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)

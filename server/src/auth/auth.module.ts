@@ -20,13 +20,14 @@ import { RolesGuard } from './roles.guard';
       envFilePath: `.env`,
     }),
     UsersModule,
-    PassportModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: process.env.JWT_CONSTANTS,
+      secret: 'keyboard-cat',
       signOptions: { expiresIn: '1h' },
-    })
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy, RolesGuard],
+  exports: [JwtStrategy, PassportModule]
 })
 export class AuthModule {}
