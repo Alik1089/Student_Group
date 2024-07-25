@@ -4,6 +4,8 @@
 /server/package-lock.json
 /server/build
 /server/.env
+/.env
+/package-lock.json
 
 /client/.next
 /client/node_modules
