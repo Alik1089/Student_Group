@@ -23,11 +23,11 @@ import { HasRoles } from 'src/auth/has-roles.decorator';
 @ApiTags('module')
 @Controller('module')
 export class ModuleController {
-  constructor(private readonly moduleService: ModuleService) {}
+  constructor(private readonly moduleService: ModuleService) { }
 
   @HasRoles(Role.ADMIN)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @ApiResponse({description:"Module create admin"})
+  @ApiResponse({ description: "Module create admin" })
   @ApiBearerAuth('JWT-auth')
   @Post()
   async create(@Body() createModuleDto: CreateModuleDto, @Res() res: Response) {
@@ -46,8 +46,12 @@ export class ModuleController {
     return this.moduleService.findAll();
   }
 
+  @HasRoles(Role.TEACHER)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({ description: "Module show teacher" })
+  @ApiBearerAuth('JWT-auth')
   @Get(':id')
-  async findOne(@Param('id') id: string,@Res() res: Response) {
+  async findOne(@Param('id') id: string, @Res() res: Response) {
     try {
       const data = await this.moduleService.findOne(+id);
       return res.status(HttpStatus.CREATED).json(data);
@@ -58,8 +62,12 @@ export class ModuleController {
     }
   }
 
+  @HasRoles(Role.TEACHER)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({ description: "Module show teacher" })
+  @ApiBearerAuth('JWT-auth')
   @Get("course/:id")
-  async findAllByCourseId(@Param('id') id: string,@Res() res: Response){
+  async findAllByCourseId(@Param('id') id: string, @Res() res: Response) {
     try {
       const data = await this.moduleService.findAllByCourseId(+id);
       return res.status(HttpStatus.CREATED).json(data);
@@ -72,7 +80,7 @@ export class ModuleController {
 
   @HasRoles(Role.ADMIN)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @ApiResponse({description:"Module update admin"})
+  @ApiResponse({ description: "Module update admin" })
   @ApiBearerAuth('JWT-auth')
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateModuleDto: UpdateModuleDto, @Res() res: Response) {
@@ -88,7 +96,7 @@ export class ModuleController {
 
   @HasRoles(Role.ADMIN)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @ApiResponse({description:"Module deleted admin"})
+  @ApiResponse({ description: "Module deleted admin" })
   @ApiBearerAuth('JWT-auth')
   @Delete(':id')
   async remove(@Param('id') id: string, @Res() res: Response) {

@@ -11,13 +11,17 @@ import {
   OneToOne,
   PrimaryColumn,
 } from 'typeorm';
+import * as Joi from "joi"
+import { JoiSchema } from "nestjs-joi"
 
 @Entity()
 export class Teacher {
   @PrimaryColumn()
+  @JoiSchema(Joi.number().required())
   userId: number;
 
   @Column()
+  @JoiSchema(Joi.number().required())
   salary: number;
 
   @OneToOne((type) => User, (user) => user.teacher, {

@@ -10,13 +10,17 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Model } from 'src/module/entities/module.entity';
+import * as Joi from "joi"
+import { JoiSchema } from "nestjs-joi"
 
 @Entity()
 export class ModuleGroup {
   @PrimaryColumn()
+  @JoiSchema(Joi.number().required())
   groupId: number;
 
   @PrimaryColumn()
+  @JoiSchema(Joi.number().required())
   modelId: number;
 
   @ManyToOne((type) => Group, (group) => group.modulegroup, {

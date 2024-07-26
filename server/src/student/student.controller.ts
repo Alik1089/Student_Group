@@ -41,13 +41,19 @@ export class StudentController {
     return this.studentService.findAll();
   }
 
+  @HasRoles(Role.STUDENT)
   @UseGuards(AuthGuard('jwt'))
+  @ApiResponse({ description: 'Student show student' })
   @ApiBearerAuth('JWT-auth')
   @Get(':id')
   findOne(@Request() req, @Param('id') id: string) {
     return this.studentService.findOne(req.user.id);
   }
 
+  @HasRoles(Role.STUDENT)
+  @UseGuards(AuthGuard('jwt'))
+  @ApiResponse({ description: 'Student homework show student' })
+  @ApiBearerAuth('JWT-auth')
   @Get('/homeworks/:id')
   async findAllHomeworks(
     @Request() req,
@@ -64,6 +70,10 @@ export class StudentController {
     }
   }
 
+  @HasRoles(Role.STUDENT)
+  @UseGuards(AuthGuard('jwt'))
+  @ApiResponse({ description: 'Student rates show student' })
+  @ApiBearerAuth('JWT-auth')
   @Get('/rates/:id')
   async findAllRates(
     @Request() req,

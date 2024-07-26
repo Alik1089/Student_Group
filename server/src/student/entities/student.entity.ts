@@ -10,10 +10,13 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import * as Joi from "joi"
+import { JoiSchema } from "nestjs-joi"
 
 @Entity()
 export class Student {
   @PrimaryColumn()
+  @JoiSchema(Joi.number().required())
   userId: number;
 
   @OneToOne((type) => User, (user) => user.student,{

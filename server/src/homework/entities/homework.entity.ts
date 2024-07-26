@@ -10,19 +10,25 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Model } from 'src/module/entities/module.entity';
+import * as Joi from "joi"
+import { JoiSchema } from "nestjs-joi"
 
 @Entity()
 export class Homework {
   @PrimaryGeneratedColumn()
+  @JoiSchema(Joi.number().required())
   id: number;
 
   @Column()
+  @JoiSchema(Joi.string().required())
   name: string;
 
   @Column()
+  @JoiSchema(Joi.number().required())
   groupId: number;
 
   @Column()
+  @JoiSchema(Joi.number().required())
   modelId:number
 
 

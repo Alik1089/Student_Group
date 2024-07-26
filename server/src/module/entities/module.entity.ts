@@ -3,16 +3,21 @@ import { Course } from './../../course/entities/course.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Homework } from 'src/homework/entities/homework.entity';
 import { ModuleGroup } from 'src/module-group/entities/module-group.entity';
+import * as Joi from "joi"
+import { JoiSchema } from "nestjs-joi"
 
 @Entity()
 export class Model {
   @PrimaryGeneratedColumn()
+  @JoiSchema(Joi.number().required())
   id: number;
 
   @Column()     
+  @JoiSchema(Joi.string().required())
   name: string;
 
   @Column()
+  @JoiSchema(Joi.number().required())
   courseId:number
 
   @ManyToOne((type) => Course, (course) => course.module, {

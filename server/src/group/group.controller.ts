@@ -30,7 +30,7 @@ export class GroupController {
     }
   }
 
-  @HasRoles(Role.ADMIN)
+  @HasRoles(Role.ADMIN, Role.TEACHER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiResponse({description:"Groups show admin"})
   @ApiBearerAuth('JWT-auth')
@@ -39,7 +39,7 @@ export class GroupController {
     return this.groupService.findAll();
   }
 
-  @HasRoles(Role.ADMIN)
+  @HasRoles(Role.ADMIN, Role.TEACHER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiResponse({description:"Group show  admin"})
   @ApiBearerAuth('JWT-auth')
@@ -55,7 +55,7 @@ export class GroupController {
     }
   }
 
-  @HasRoles(Role.ADMIN)
+  @HasRoles(Role.ADMIN, Role.TEACHER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiResponse({description:"Group update admin"})
   @ApiBearerAuth('JWT-auth')

@@ -11,8 +11,11 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
 export class Login{
     @ApiProperty()
+    @JoiSchema(Joi.string().required())
     username:string
+
     @ApiProperty()
+    @JoiSchema(Joi.string().min(5).max(16).required())
     password:string
 }
 
@@ -55,5 +58,6 @@ export class ChangeNameSurnameDto{
 
 export class EmailDto {
     @ApiProperty()
+    @JoiSchema(Joi.string().required())
     email:string
 }

@@ -46,7 +46,7 @@ export class CourseController {
     return this.courseService.findAll();
   }
 
-  @HasRoles(Role.ADMIN)
+  @HasRoles(Role.ADMIN, Role.TEACHER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiResponse({description:"Course show admin"})
   @ApiBearerAuth('JWT-auth')

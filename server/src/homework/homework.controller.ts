@@ -27,7 +27,7 @@ export class HomeworkController {
 
   @HasRoles(Role.TEACHER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @ApiResponse({description:"Homework add by teacher"})
+  @ApiResponse({description:"Homework add teacher"})
   @ApiBearerAuth('JWT-auth')
   @Post()
   async create(@Body() createHomeworkDto: CreateHomeworkDto, @Res() res: Response) {
@@ -79,7 +79,7 @@ export class HomeworkController {
     }
   }
 
-  @HasRoles(Role.TEACHER)
+  @HasRoles(Role.TEACHER, Role.STUDENT)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiResponse({description:"Homework show  by group teacher"})
   @ApiBearerAuth('JWT-auth')
