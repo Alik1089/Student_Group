@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Login from "./components/login/Login";
+import Profile from "../components/profile/Profile";
 
 export default function IndexPage() {
-  return <Login />;
+  return <Profile />;
 }
 
 export const metadata: Metadata = {
-  title: "Redux Toolkit",
+  title: "Profile",
 };

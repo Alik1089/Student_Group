@@ -1,9 +1,9 @@
+import { usersSlice } from './features/user/userSlice';
+import  axios from 'axios';
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
-import { counterSlice } from "./features/counter/counterSlice";
-import axios from "axios";
 
-const rootReducer = combineSlices(counterSlice, );
+const rootReducer = combineSlices( usersSlice );
 export type RootState = ReturnType<typeof rootReducer>;
 
 export const makeStore = () => {
