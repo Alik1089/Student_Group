@@ -12,7 +12,7 @@ function TeacherProfile() {
         dispatch(profileUser())
         .unwrap()
         .then()
-        .catch( (err) => router.push("/login"));
+        .catch( (err) => router.push("/"));
     },[])
 
   return (

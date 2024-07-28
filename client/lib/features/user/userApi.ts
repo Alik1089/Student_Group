@@ -4,19 +4,17 @@ import { ILogin } from "./../../types/index";
 import { myAxios } from "@/lib/store";
 
 export const getUsersApi = async () => {
+    const token = await Cookies.get("token");
     const { data } = await myAxios.get("/users", {
-        headers: {
-            Authorization: "bearer " + localStorage.token,
-        },
+        headers: { Authorization: `Bearer ${token}` },
     });
     return data;
 };
 
-export const addUserApi = async (obj:IUser) => {
+export const addSingleUserApi = async (obj:IUser) => {
+    const token = Cookies.get("token");
     const {data} = await myAxios.post("/users", obj,{
-        headers: {
-            Authorization: "bearer " + localStorage.token,
-        },
+        headers: { Authorization: `Bearer ${token}` },
     })
     return data
 }

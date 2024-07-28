@@ -1,13 +1,22 @@
 "use client";
 import { useAppDispatch } from "@/lib/hooks";
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import { AddUserSchema } from "./adduserSchema";
-import { addUser } from "@/lib/features/user/userSlice";
+import { addUser, profileUser } from "@/lib/features/user/userSlice";
 import { IUser } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
 function AddUser() {
     const dispatch = useAppDispatch();
+    const router = useRouter()
+
+    useEffect(() => {
+        dispatch(profileUser())
+        .unwrap()
+        .then()
+        .catch( (err) => router.push("/"));
+    },[])
 
     const formik = useFormik({
         initialValues: {
@@ -26,11 +35,13 @@ function AddUser() {
     });
     return (
         <>
+            <div>AddUser</div>
             <form onSubmit={formik.handleSubmit}>
                 <div>
                     <label htmlFor="name">Name</label>
                     <input
                         type="text"
+                        defaultValue={""}
                         id="name"
                         name="name"
                         onChange={formik.handleChange}
@@ -46,6 +57,7 @@ function AddUser() {
                     <label htmlFor="surname">Surname</label>
                     <input
                         type="text"
+                        defaultValue={""}
                         id="surname"
                         name="surname"
                         onChange={formik.handleChange}
@@ -61,6 +73,7 @@ function AddUser() {
                     <label htmlFor="age">Age</label>
                     <input
                         type="text"
+                        defaultValue={0}
                         id="age"
                         name="age"
                         onChange={formik.handleChange}
@@ -76,6 +89,7 @@ function AddUser() {
                     <label htmlFor="email">Email</label>
                     <input
                         type="text"
+                        defaultValue={""}
                         id="email"
                         name="email"
                         onChange={formik.handleChange}
@@ -92,6 +106,7 @@ function AddUser() {
                     <input
                         type="text"
                         id="password"
+                        defaultValue={""}
                         name="password"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -106,6 +121,7 @@ function AddUser() {
                     <label htmlFor="role">Role</label>
                     <select
                         className="custom-select d-block w-100"
+                        defaultValue={0}
                         id="role"
                         name="role"
                         value={formik.values.role}
@@ -123,6 +139,7 @@ function AddUser() {
                     <input
                         type="text"
                         id="phoneNumber"
+                        defaultValue={""}
                         name="phoneNumber"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -135,8 +152,6 @@ function AddUser() {
 
                 <button type="submit">Submit</button>
             </form>
-
-            <div>AddUser</div>
         </>
     );
 }

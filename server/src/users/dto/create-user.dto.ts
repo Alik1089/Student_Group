@@ -33,10 +33,10 @@ export class CreateUserDto {
   phoneNumber: string;
 
   @ApiProperty()
-  @JoiSchema(Joi.number().required())
+  @JoiSchema(Joi.number())
   salary:number
   
   @ApiProperty()
-  @JoiSchema(Joi.number().required())
+  @JoiSchema(Joi.number())
   groupId:number
 }

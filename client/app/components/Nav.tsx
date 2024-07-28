@@ -11,19 +11,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "../styles/layout.module.css";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export const Nav = () => {
     const pathname = usePathname();
     const dispatch = useAppDispatch();
+    const router = useRouter()
+
     const user = useAppSelector(selectUser);
     const status = useAppSelector(selectStatus);
-    console.log(user, status);
 
     useEffect(() => {
-        dispatch(profileUser()).unwrap().then(res=>{
-            console.log("res",res);
-        }).catch(console.warn);
+        dispatch(profileUser()).unwrap().then().catch(console.warn);
     }, []);
+
+    const logout = () => {
+        Cookies.remove("token");
+        router.push("/")
+    }
 
     return (
         <>
@@ -52,8 +58,15 @@ export const Nav = () => {
                             >
                                 Add user
                             </Link>
-                            <span>admin</span>
-                        </>
+                            <Link
+                                className={` ${
+                                    pathname === "/users" ? styles.active : ""
+                                }`}
+                                href="/profile/admin/users"
+                            >
+                                Users
+                            </Link>
+                        </>    
                     ) : user.role == 1 ? (
                         <>
                             <span>teacher</span>
@@ -66,7 +79,7 @@ export const Nav = () => {
                         <></>
                     )}
 
-                    <button>Log Out</button>
+                    <button onClick = {logout} >Log Out</button>
                 </>
             ) : (
                 <Link

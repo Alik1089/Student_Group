@@ -1,7 +1,7 @@
-import { usersSlice } from './features/user/userSlice';
 import  axios from 'axios';
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
+import { usersSlice } from './features/user/userSlice';
 
 const rootReducer = combineSlices( usersSlice );
 export type RootState = ReturnType<typeof rootReducer>;

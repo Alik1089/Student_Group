@@ -16,7 +16,7 @@ function Profile() {
     },[])
 
   return (
-    <div>TeacherProfile</div>
+    <div>Profile</div>
   )
 }
 

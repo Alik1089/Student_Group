@@ -46,7 +46,6 @@ export const usersSlice = createAppSlice({
                 state.status = true
             }
         }),
-
         addUser: create.asyncThunk(
             async(obj:IUser) => {
                 return await addUserApi(obj)
