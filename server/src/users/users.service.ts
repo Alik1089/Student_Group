@@ -6,7 +6,12 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import { EmailDto, UpdateUserDto, ChangePasswordDto, ChangeNameSurnameDto } from './dto/update-user.dto';
+import {
+  EmailDto,
+  UpdateUserDto,
+  ChangePasswordDto,
+  ChangeNameSurnameDto,
+} from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuid } from 'uuid';
@@ -81,7 +86,14 @@ export class UsersService {
   }
 
   async findAll() {
-    return await this.userRepository.find();
+    return await this.userRepository.find({
+      relations: {
+        teacher: true,
+        student: {
+          group: true,
+        },
+      },
+    });
   }
 
   async teacherFindAll() {
@@ -151,16 +163,16 @@ export class UsersService {
     }
   }
 
-  async changePassword(id:number, changePasswordDto:ChangePasswordDto) {
-    const { oldPassword,newPassword } = changePasswordDto;
+  async changePassword(id: number, changePasswordDto: ChangePasswordDto) {
+    const { oldPassword, newPassword } = changePasswordDto;
     const user = await this.userRepository.findOneBy({ id });
     if (user) {
-      if (bcrypt.compareSync(oldPassword,user.password)) {
+      if (bcrypt.compareSync(oldPassword, user.password)) {
         await this.userRepository.update(user.id, {
           password: bcrypt.hashSync(newPassword, 10),
         });
         return true;
-      }else{
+      } else {
         return false;
       }
     } else {
@@ -168,18 +180,21 @@ export class UsersService {
     }
   }
 
-  async changeNameSurname(id:number, changeNameSurnameDto:ChangeNameSurnameDto) {
-    const { name,surname } = changeNameSurnameDto;
+  async changeNameSurname(
+    id: number,
+    changeNameSurnameDto: ChangeNameSurnameDto,
+  ) {
+    const { name, surname } = changeNameSurnameDto;
     const user = await this.userRepository.findOneBy({ id });
     if (user) {
-        await this.userRepository.update(user.id, {
-          name,surname,
-        });
+      await this.userRepository.update(user.id, {
+        name,
+        surname,
+      });
     } else {
       return ' User is not found ';
     }
   }
-
 
   async remove11(id: number) {
     return await this.userRepository.delete(id);

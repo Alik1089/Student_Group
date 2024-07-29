@@ -76,28 +76,28 @@ export class StudentService {
         where: { group: student.group },
         relations: {
           user: true,
-          group:true,
-          rate:{
-            homework:true
-          }
+          group: true,
+          rate: {
+            homework: true,
+          },
         },
         select: {
           user: {
-            id:true,
-            name:true,
-            surname:true,
-            email:true,
+            id: true,
+            name: true,
+            surname: true,
+            email: true,
           },
-          group:{
-            id:true
+          group: {
+            id: true,
           },
-          rate:{
-            rate:true,
-            homework:{
-              id:true,
-              name:true
-            }
-          }
+          rate: {
+            rate: true,
+            homework: {
+              id: true,
+              name: true,
+            },
+          },
         },
       });
       return friends;

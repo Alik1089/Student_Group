@@ -1,4 +1,4 @@
-import { IUser } from '@/lib/types';
+import { IAddCourse, IAddUser, IUser } from '@/lib/types';
 import  Cookies  from 'js-cookie';
 import { ILogin } from "./../../types/index";
 import { myAxios } from "@/lib/store";
@@ -11,9 +11,35 @@ export const getUsersApi = async () => {
     return data;
 };
 
-export const addSingleUserApi = async (obj:IUser) => {
+export const delUserApi = async (id:number) => {
+    console.log(id);
+    
+    const token = await Cookies.get("token");
+    const { data } = await myAxios.delete(`/users/${+id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    return data;
+}
+
+export const getGroupApi = async () => {
+    const token = await Cookies.get("token");
+    const { data } = await myAxios.get("/group", {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    return data;
+}
+
+export const addSingleUserApi = async (obj:IAddUser) => {
     const token = Cookies.get("token");
     const {data} = await myAxios.post("/users", obj,{
+        headers: { Authorization: `Bearer ${token}` },
+    })
+    return data
+}
+
+export const addCourseApi = async (obj:IAddCourse) => {
+    const token = Cookies.get("token");
+    const {data} = await myAxios.post("/course", obj,{
         headers: { Authorization: `Bearer ${token}` },
     })
     return data

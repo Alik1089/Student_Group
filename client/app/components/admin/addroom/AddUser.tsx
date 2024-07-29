@@ -1,22 +1,29 @@
 "use client";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import { AddUserSchema } from "./adduserSchema";
-import { addUser, profileUser } from "@/lib/features/user/userSlice";
-import { IUser } from "@/lib/types";
+import {
+    addUser,
+    getGroupsData,
+    profileUser,
+    selectGroups,
+    usersSlice,
+} from "@/lib/features/user/userSlice";
+import { IAddUser, IGroup, IUser } from "@/lib/types";
 import { useRouter } from "next/navigation";
 
 function AddUser() {
     const dispatch = useAppDispatch();
-    const router = useRouter()
+    const router = useRouter();
+    const groups = useAppSelector(selectGroups);
 
     useEffect(() => {
         dispatch(profileUser())
-        .unwrap()
-        .then()
-        .catch( (err) => router.push("/"));
-    },[])
+            .unwrap()
+            .then(() => dispatch(getGroupsData()))
+            .catch((err) => router.push("/"));
+    }, []);
 
     const formik = useFormik({
         initialValues: {
@@ -27,21 +34,22 @@ function AddUser() {
             password: "",
             role: 0,
             phoneNumber: "",
+            salary: 0,
+            groupId: 0,
         },
         validationSchema: AddUserSchema,
-        onSubmit: (obj: IUser) => {
+        onSubmit: (obj: IAddUser) => {
             dispatch(addUser(obj)).unwrap().then().catch();
         },
     });
     return (
-        <>
+        <div>
             <div>AddUser</div>
             <form onSubmit={formik.handleSubmit}>
                 <div>
                     <label htmlFor="name">Name</label>
                     <input
                         type="text"
-                        defaultValue={""}
                         id="name"
                         name="name"
                         onChange={formik.handleChange}
@@ -57,7 +65,6 @@ function AddUser() {
                     <label htmlFor="surname">Surname</label>
                     <input
                         type="text"
-                        defaultValue={""}
                         id="surname"
                         name="surname"
                         onChange={formik.handleChange}
@@ -73,7 +80,6 @@ function AddUser() {
                     <label htmlFor="age">Age</label>
                     <input
                         type="text"
-                        defaultValue={0}
                         id="age"
                         name="age"
                         onChange={formik.handleChange}
@@ -89,7 +95,6 @@ function AddUser() {
                     <label htmlFor="email">Email</label>
                     <input
                         type="text"
-                        defaultValue={""}
                         id="email"
                         name="email"
                         onChange={formik.handleChange}
@@ -106,7 +111,6 @@ function AddUser() {
                     <input
                         type="text"
                         id="password"
-                        defaultValue={""}
                         name="password"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -121,13 +125,15 @@ function AddUser() {
                     <label htmlFor="role">Role</label>
                     <select
                         className="custom-select d-block w-100"
-                        defaultValue={0}
                         id="role"
                         name="role"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value={formik.values.role}
                     >
-                        <option value={1}>Student...</option>
-                        <option value={2}>Teacher...</option>
+                        <option value={5} selected disabled>Roles</option>
+                        <option value={0}>Student...</option>
+                        <option value={1}>Teacher...</option>
                     </select>
                     {formik.touched.role && formik.errors.role ? (
                         <div>{formik.errors.role}</div>
@@ -139,7 +145,6 @@ function AddUser() {
                     <input
                         type="text"
                         id="phoneNumber"
-                        defaultValue={""}
                         name="phoneNumber"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -150,9 +155,56 @@ function AddUser() {
                     ) : null}
                 </div>
 
+                <div>
+                    {formik.values.role == 0 ? (
+                        <>
+                            <div className="col-md-5 mb-3">
+                                <label htmlFor="groupId">Group Id</label>
+                                <select
+                                    className="custom-select d-block w-100"
+                                    id="groupId"
+                                    name="groupId"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.groupId}
+                                >
+                                    {groups.map((elm: IGroup, i: number) => (
+                                        <option key={i} value={elm.id}>
+                                            {elm.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                {formik.touched.groupId &&
+                                formik.errors.groupId ? (
+                                    <div>{formik.errors.groupId}</div>
+                                ) : null}
+                            </div>
+                        </>
+                    ) : formik.values.role == 1 ? (
+                        <>
+                            <div>
+                                <label htmlFor="salary">salary</label>
+                                <input
+                                    type="text"
+                                    id="salary"
+                                    name="salary"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.salary}
+                                />
+                                {formik.touched.salary &&
+                                formik.errors.salary ? (
+                                    <div>{formik.errors.salary}</div>
+                                ) : null}
+                            </div>
+                        </>
+                    ) : (
+                        <></>
+                    )}
+                </div>
                 <button type="submit">Submit</button>
             </form>
-        </>
+        </div>
     );
 }
 

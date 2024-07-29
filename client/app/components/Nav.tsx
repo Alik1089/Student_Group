@@ -66,6 +66,30 @@ export const Nav = () => {
                             >
                                 Users
                             </Link>
+                            <Link
+                                className={` ${
+                                    pathname === "/addcourse" ? styles.active : ""
+                                }`}
+                                href="/profile/admin/addcourse"
+                            >
+                                Add course
+                            </Link>
+                            <Link
+                                className={` ${
+                                    pathname === "/addgroup" ? styles.active : ""
+                                }`}
+                                href="/profile/admin/addgroup"
+                            >
+                                Add group
+                            </Link>
+                            <Link
+                                className={` ${
+                                    pathname === "/addmodule" ? styles.active : ""
+                                }`}
+                                href="/profile/admin/addmodule"
+                            >
+                                Add module
+                            </Link>
                         </>    
                     ) : user.role == 1 ? (
                         <>

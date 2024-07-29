@@ -2,8 +2,14 @@ import  axios from 'axios';
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import { usersSlice } from './features/user/userSlice';
+import { courseSlice } from './features/courses/courseSlice';
+import { modulesSlice } from './features/modules/modulesSlice';
 
-const rootReducer = combineSlices( usersSlice );
+export const myAxios = axios.create({
+  baseURL:"http://localhost:8080"
+})
+
+const rootReducer = combineSlices( usersSlice, modulesSlice, courseSlice );
 export type RootState = ReturnType<typeof rootReducer>;
 
 export const makeStore = () => {
@@ -24,6 +30,4 @@ export type AppThunk<ThunkReturnType = void> = ThunkAction<
   Action
 >;
 
-export const myAxios = axios.create({
-  baseURL:"http://localhost:8080"
-})
+

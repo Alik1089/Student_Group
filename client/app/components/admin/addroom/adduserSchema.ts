@@ -8,4 +8,6 @@ export const AddUserSchema = Yup.object().shape({
     password: Yup.string().required(),
     role: Yup.number().required(),
     phoneNumber: Yup.string().required(),
+    salary: Yup.number(),
+    groupId: Yup.number(),
 })
