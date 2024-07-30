@@ -40,7 +40,14 @@ export class GroupService {
   }
 
   findAll() {
-    return this.groupRepository.find();
+    return this.groupRepository.find({
+      relations:{
+        teacher:{
+          user:true
+        },
+        module:true
+      }
+    });
   }
 
   async findOne(id: number) {
@@ -61,6 +68,27 @@ export class GroupService {
             user:true
           }
         },
+        select:{
+          id:true,
+          name:true,
+          module:{
+            name:true
+          },
+          student:{
+            userId:true,
+            user:{
+              name:true,
+              surname:true,
+            }
+          },
+          teacher:{
+            userId:true,
+            user:{
+              name:true,
+              surname:true,
+            }
+          }
+        }
       });
       return group;
     } else {
@@ -97,10 +125,11 @@ export class GroupService {
     }
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     const group = this.groupRepository.findOneBy({ id });
     if (group) {
-      return this.groupRepository.delete(id);
+      await this.groupRepository.delete(id);
+      return this.findAll()
     } else {
       return 'Group is not found';
     }

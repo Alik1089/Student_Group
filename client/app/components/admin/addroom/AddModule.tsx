@@ -36,13 +36,12 @@ function AddModule() {
         validationSchema: AddModuleSchema,
         onSubmit: (obj: IAddModule) => {
             console.log(obj);
-            
             dispatch(addModule(obj)).unwrap().then().catch();
         },
     });
     return (
         <div>
-            <div>Add Course</div>
+            <div>Add Module</div>
             <form onSubmit={formik.handleSubmit}>
                 <div>
                     <label htmlFor="name">Name</label>
@@ -60,7 +59,7 @@ function AddModule() {
                 </div>
 
                 <div className="col-md-5 mb-3">
-                    <label htmlFor="courseId">Course Id</label>
+                    <label htmlFor="courseId">Course </label>
                     <select
                         className="custom-select d-block w-100"
                         id="courseId"

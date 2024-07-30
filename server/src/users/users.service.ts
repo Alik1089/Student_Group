@@ -85,15 +85,47 @@ export class UsersService {
     }
   }
 
-  async findAll() {
-    return await this.userRepository.find({
-      relations: {
-        teacher: true,
-        student: {
-          group: true,
+  async findAll(role: number) {
+    if (role) {
+      return await this.userRepository.find({
+        where: {
+          role,
         },
-      },
-    });
+        relations: {
+          teacher: true,
+          student: {
+            group: true,
+          },
+        },
+        select: {
+          name: true,
+          surname: true,
+          age: true,
+          email: true,
+          image: true,
+          phoneNumber: true,
+          role: true,
+        },
+      });
+    } else {
+      return await this.userRepository.find({
+        relations: {
+          teacher: true,
+          student: {
+            group: true,
+          },
+        },
+        select: {
+          name: true,
+          surname: true,
+          age: true,
+          email: true,
+          image: true,
+          phoneNumber: true,
+          role: true,
+        },
+      });
+    }
   }
 
   async teacherFindAll() {
@@ -196,7 +228,8 @@ export class UsersService {
     }
   }
 
-  async remove11(id: number) {
-    return await this.userRepository.delete(id);
+  async remove11(id: number, role:number) {
+    await this.userRepository.delete(id);
+    return await this.findAll(role);
   }
 }

@@ -40,6 +40,7 @@ export class CourseService {
   }
 
   async remove(id: number) {
-    return await this.courseRepository.delete(id);
+    await this.courseRepository.delete(id);
+    return await this.findAll()
   }
 }

@@ -16,7 +16,6 @@ import { JoiSchema } from "nestjs-joi"
 @Entity()
 export class Student {
   @PrimaryColumn()
-  @JoiSchema(Joi.number().required())
   userId: number;
 
   @OneToOne((type) => User, (user) => user.student,{

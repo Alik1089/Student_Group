@@ -1,17 +1,10 @@
-import {
-    IGroup,
-    ILogin,
-    IAddUser,
-    ICourse,
-    IAddCourse,
-} from "./../../types/index";
+import { ILogin, IAddUser, ITeacher } from "./../../types/index";
 import { createAppSlice } from "@/lib/createAppSlice";
 import { IUser } from "@/lib/types";
 import {
-    addCourseApi,
     addSingleUserApi,
     delUserApi,
-    getGroupApi,
+    getTeachersApi,
     getUsersApi,
     loginUserApi,
     profileUserApi,
@@ -21,16 +14,14 @@ export interface UserSliceState {
     users: IUser[];
     user: IUser;
     status: boolean;
-    groups: IGroup[];
-    courses: ICourse[];
+    teachers:ITeacher[]
 }
 
 const initialState: UserSliceState = {
     users: [],
     user: {} as IUser,
     status: true,
-    groups: [],
-    courses: [],
+    teachers:[]
 };
 
 export const usersSlice = createAppSlice({
@@ -38,12 +29,23 @@ export const usersSlice = createAppSlice({
     initialState,
     reducers: (create) => ({
         getUsersData: create.asyncThunk(
-            async () => {
-                return await getUsersApi();
+            async (role?:number) => {
+                return await getUsersApi(role);
             },
             {
                 fulfilled: (state, action) => {
                     state.users = action.payload;
+                },
+            }
+        ),
+
+        getTeacherData:create.asyncThunk(
+            async () => {
+                return await getTeachersApi()
+            },
+            {
+                fulfilled: (state, action) => {
+                    state.teachers = action.payload;
                 },
             }
         ),
@@ -59,19 +61,10 @@ export const usersSlice = createAppSlice({
             }
         ),
 
-        getGroupsData: create.asyncThunk(
-            async () => {
-                return await getGroupApi();
-            },
-            {
-                fulfilled: (state, action) => {
-                    state.groups = action.payload;
-                },
-            }
-        ),
         loginUser: create.asyncThunk(async (obj: ILogin) => {
             return await loginUserApi(obj);
         }),
+
         profileUser: create.asyncThunk(
             async () => {
                 return await profileUserApi();
@@ -86,6 +79,9 @@ export const usersSlice = createAppSlice({
                 },
             }
         ),
+        logoutUser:create.reducer((state, action)=>{
+            state.user = {} as IUser
+        }),
         addUser: create.asyncThunk(
             async (obj: IAddUser) => {
                 return await addSingleUserApi(obj);
@@ -96,40 +92,15 @@ export const usersSlice = createAppSlice({
                 },
             }
         ),
-
-        addCourse: create.asyncThunk(
-            async (obj: IAddCourse) => {
-                return await addCourseApi(obj);
-            },
-            {
-                fulfilled: (state, action) => {
-                    state.courses = action.payload;
-                },
-            }
-        ),
     }),
     selectors: {
         selectUsers: (users) => users.users,
         selectUser: (users) => users.user,
         selectStatus: (users) => users.status,
-        selectGroups: (users) => users.groups,
-        selectCourse: (users) => users.courses,
+        selectTeachers: (users) => users.teachers,
     },
 });
 
-export const {
-    getUsersData,
-    loginUser,
-    profileUser,
-    addUser,
-    getGroupsData,
-    delUserData,
-    addCourse,
-} = usersSlice.actions;
-export const {
-    selectUsers,
-    selectUser,
-    selectStatus,
-    selectGroups,
-    // selectCourse,
-} = usersSlice.selectors;
+export const { getUsersData, loginUser, profileUser, addUser, delUserData, getTeacherData,logoutUser} =
+    usersSlice.actions;
+export const { selectUsers, selectUser, selectStatus, selectTeachers } = usersSlice.selectors;

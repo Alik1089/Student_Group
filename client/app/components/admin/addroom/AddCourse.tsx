@@ -1,5 +1,6 @@
 "use client"
-import { addCourse, profileUser } from '@/lib/features/user/userSlice';
+import { addCourse } from '@/lib/features/courses/courseSlice';
+import { profileUser } from '@/lib/features/user/userSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { IAddCourse } from '@/lib/types';
 import { useFormik } from 'formik';

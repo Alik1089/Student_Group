@@ -27,7 +27,7 @@ export class TeacherService {
         //     user:true
         //   }
         // }
-      }
+      },
     })
     return teachers;
   }

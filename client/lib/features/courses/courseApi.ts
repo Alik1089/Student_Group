@@ -19,7 +19,7 @@ export const delCourseApi = async(id:number) => {
 
 export const addCourseApi = async (obj:IAddCourse) => {
     const token = await Cookies.get("token");
-    const { data } = await myAxios.patch("/course", obj,  {
+    const { data } = await myAxios.post("/course", obj,  {
         headers: { Authorization: `Bearer ${token}` },
     });
     return data;

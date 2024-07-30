@@ -38,11 +38,6 @@ export const courseSlice = createAppSlice({
         addCourse: create.asyncThunk(
             async (obj: IAddCourse) => {
                 return await addCourseApi(obj);
-            },
-            {
-                fulfilled: (state, action) => {
-                    state.course = action.payload;
-                },
             }
         ),
     }),

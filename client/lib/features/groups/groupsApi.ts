@@ -1,28 +1,28 @@
-import {  IAddModule } from '@/lib/types';
+import { IAddGroup } from '@/lib/types';
 import  Cookies  from 'js-cookie';
 import { myAxios } from "@/lib/store";
 
-export const getModulesApi = async () => {
+export const getGroupsApi = async () => {
     const token = await Cookies.get("token");
-    const { data } = await myAxios.get("/module", {
+    const { data } = await myAxios.get("/group", {
         headers: { Authorization: `Bearer ${token}` },
     });
     return data;
 };
 
-export const delModuleApi = async(id:number) => {
+
+export const delGroupApi = async(id:number) => {
     const token = await Cookies.get("token");
-    const { data } = await myAxios.delete(`/module/${id}`, {
+    const { data } = await myAxios.delete(`/group/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
     });
     return data;
 }
 
-export const addModuleApi = async (obj:IAddModule) => {
+export const addGroupApi = async (obj:IAddGroup) => {
     const token = await Cookies.get("token");
     console.log(obj, token);
-    
-    const { data } = await myAxios.post("/module", obj,  {
+    const { data } = await myAxios.post("/group", obj,  {
         headers: { Authorization: `Bearer ${token}` },
     });
     return data;

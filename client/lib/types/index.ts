@@ -3,6 +3,8 @@ export interface IGroup{
     id:number
     name:string
     teacherId:number
+    teacher:ITeacher
+    module:IModule
 }
 
 export interface ICourse{
@@ -15,6 +17,7 @@ export interface IModule{
     id:number;
     name:string;
     courseid:number
+    course:ICourse
 }
 
 export interface IAddCourse{
@@ -27,14 +30,28 @@ export interface IAddModule{
     courseId:number;
 }
 
+export interface IAddGroup{
+    name: string
+    teacherId:number
+    count:number
+    moduleId:number
+}
+
 export interface ITeacher{
-    id:number,
+    userId:number,
+    user:IUser
     salary:number
 }
 
+export interface IAddTeacher{
+
+}
+
 export interface IStudent{
-    id:number,
+    userId:number,
     group:IGroup
+    user:IUser
+    // rate:IRate
 }
 
 
@@ -65,12 +82,6 @@ export interface IAddUser{
     groupId: number,
 }
 
-export interface IAddGroup{
-    name: string
-    teacherId:number
-    count:number
-    moduleId:number
-}
 
 export interface ILogin{
     username:string

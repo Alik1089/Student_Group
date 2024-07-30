@@ -1,12 +1,11 @@
 "use client";
 import {
+    logoutUser,
     profileUser,
     selectStatus,
     selectUser,
-    selectUsers,
 } from "@/lib/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { IUser } from "@/lib/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -21,13 +20,16 @@ export const Nav = () => {
 
     const user = useAppSelector(selectUser);
     const status = useAppSelector(selectStatus);
+    const [bool, setBool] = useState<boolean>(false)
 
     useEffect(() => {
         dispatch(profileUser()).unwrap().then().catch(console.warn);
-    }, []);
+    }, [bool]);
 
     const logout = () => {
         Cookies.remove("token");
+        logoutUser()
+        setBool(!bool)
         router.push("/")
     }
 
@@ -50,43 +52,31 @@ export const Nav = () => {
                     </Link>
                     { user.role == 2 ? (
                         <>
-                            <Link
-                                className={` ${
-                                    pathname === "/adduser" ? styles.active : ""
-                                }`}
-                                href="/profile/admin/adduser"
-                            >
-                                Add user
-                            </Link>
-                            <Link
-                                className={` ${
-                                    pathname === "/users" ? styles.active : ""
-                                }`}
-                                href="/profile/admin/users"
-                            >
+                            <Link className={` ${pathname === "/users" ? styles.active : ""}`} href="/profile/admin/users">
                                 Users
                             </Link>
-                            <Link
-                                className={` ${
-                                    pathname === "/addcourse" ? styles.active : ""
-                                }`}
-                                href="/profile/admin/addcourse"
-                            >
+                            <Link className={` ${pathname === "/adduser" ? styles.active : ""}`} href="/profile/admin/adduser">
+                                Add user
+                            </Link>
+
+                            <Link className={` ${ pathname === "/courses" ? styles.active : ""}`} href="/profile/admin/courses">
+                                Courses
+                            </Link>
+                            <Link className={` ${ pathname === "/addcourse" ? styles.active : ""}`} href="/profile/admin/addcourse">
                                 Add course
                             </Link>
-                            <Link
-                                className={` ${
-                                    pathname === "/addgroup" ? styles.active : ""
-                                }`}
-                                href="/profile/admin/addgroup"
-                            >
+
+                            <Link className={` ${ pathname === "/groups" ? styles.active : ""}`} href="/profile/admin/group">
+                                Groups
+                            </Link>
+                            <Link className={` ${pathname === "/addgroup" ? styles.active : ""}`}href="/profile/admin/addgroup">
                                 Add group
                             </Link>
-                            <Link
-                                className={` ${
-                                    pathname === "/addmodule" ? styles.active : ""
-                                }`}
-                                href="/profile/admin/addmodule"
+
+                            <Link className={` ${ pathname === "/modules" ? styles.active : ""}`} href="/profile/admin/modules">
+                                Modules
+                            </Link>
+                            <Link className={` ${pathname === "/addmodule" ? styles.active : ""}`}href="/profile/admin/addmodule"
                             >
                                 Add module
                             </Link>

@@ -2,8 +2,10 @@
 import { getUsersApi } from "@/lib/features/user/userApi";
 import {
     delUserData,
+    getTeacherData,
     getUsersData,
     profileUser,
+    selectTeachers,
     selectUsers,
 } from "@/lib/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -15,6 +17,7 @@ function Users() {
     const dispatch = useAppDispatch();
     const router = useRouter();
     let users = useAppSelector(selectUsers);
+    let teachers = useAppSelector(selectTeachers)
     console.log(users);
 
     useEffect(() => {
@@ -24,12 +27,28 @@ function Users() {
             .catch((err) => router.push("/"));
     }, []);
 
-    const delUser = async (id:number) => {
-        await dispatch(delUserData(+id))
+    const delUser = async (id: number) => {
+        await dispatch(delUserData(+id));
+    };
+
+    const teachersget = async () => {
+        dispatch(getUsersData(1))
+    };
+
+    const studentsget = () => {
+        dispatch(getUsersData(0))
+    }
+    const all = () => {
+        dispatch(getUsersData())
     }
 
     return (
         <>
+        <div>
+            <button onClick={() => all()}>All</button>
+            <button onClick={() => teachersget()}>Teachers</button>
+            <button onClick={() => studentsget()}>Students</button>
+        </div>
             <table>
                 <thead>
                     <tr>
@@ -44,7 +63,7 @@ function Users() {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((elm: IUser) => {
+                    {users?.map((elm: IUser) => {
                         return (
                             <>
                                 {elm.role != 2 ? (
@@ -65,12 +84,20 @@ function Users() {
                                             {elm.role == 1 ? (
                                                 <td>{elm.teacher.salary}$</td>
                                             ) : elm.role == 0 ? (
-                                                <td>{elm.student.group.name}</td>
+                                                <td>
+                                                    {elm.student.group.name}
+                                                </td>
                                             ) : (
                                                 <></>
                                             )}
                                             <td>
-                                                <button onClick={() => delUser(elm.id)}>Delete</button>
+                                                <button
+                                                    onClick={() =>
+                                                        delUser(elm.id)
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
                                             </td>
                                         </tr>
                                     </>

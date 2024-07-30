@@ -5,18 +5,16 @@ import { useFormik } from "formik";
 import { AddUserSchema } from "./adduserSchema";
 import {
     addUser,
-    getGroupsData,
     profileUser,
-    selectGroups,
-    usersSlice,
 } from "@/lib/features/user/userSlice";
 import { IAddUser, IGroup, IUser } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { getGroupsData, selectGroup } from "@/lib/features/groups/groupsSlice";
 
 function AddUser() {
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const groups = useAppSelector(selectGroups);
+    const groups = useAppSelector(selectGroup);
 
     useEffect(() => {
         dispatch(profileUser())
@@ -32,7 +30,7 @@ function AddUser() {
             age: 0,
             email: "",
             password: "",
-            role: 0,
+            role: 5,
             phoneNumber: "",
             salary: 0,
             groupId: 0,
@@ -131,7 +129,7 @@ function AddUser() {
                         onBlur={formik.handleBlur}
                         value={formik.values.role}
                     >
-                        <option value={5} selected disabled>Roles</option>
+                        <option value={5} hidden>Roles</option>
                         <option value={0}>Student...</option>
                         <option value={1}>Teacher...</option>
                     </select>

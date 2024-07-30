@@ -18,13 +18,20 @@ export class ModuleService {
     const course = await this.courseRepository.findOne({
       where: { id: courseId },
     });
-
-    if (course) return this.moduleRepository.save({name, course});
-    return 'Does not have that course';
+    if (course) {
+      await this.moduleRepository.save({name, course});
+      return this.findAll()
+    }else{
+      return 'Does not have that course';
+    }
   }
 
   async findAll() {
-    return  await this.moduleRepository.find();
+    return  await this.moduleRepository.find({
+      relations:{
+        course:true
+      }
+    });
   }
 
   async findOne(id: number) {
@@ -62,7 +69,8 @@ export class ModuleService {
   async remove(id: number) {
     const module = await this.moduleRepository.findOneBy({id});
     if(module){
-      return await this.moduleRepository.delete(id)
+      await this.moduleRepository.delete(id)
+      return this.findAll()
     }
     return `That id was wrong`;
   }

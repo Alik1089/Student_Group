@@ -17,6 +17,7 @@ import {
   UploadedFile,
   Res,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -44,13 +45,13 @@ export class UsersController {
     return this.usersService.create(req, createUserDto);
   }
 
-  @HasRoles(Role.ADMIN)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @ApiResponse({description:"user show admin"})
-  @ApiBearerAuth('JWT-auth')
+  // @HasRoles(Role.ADMIN)
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
+  // @ApiResponse({description:"user show admin"})
+  // @ApiBearerAuth('JWT-auth')
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(@Query("role") role:number) {
+    return this.usersService.findAll(role);
   }
 
   @HasRoles(Role.ADMIN)
@@ -169,8 +170,8 @@ export class UsersController {
   @ApiResponse({ description: 'user deleted admin' })
   @ApiBearerAuth('JWT-auth')
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove11(+id);
+  remove(@Param('id') id: string, @Query("role") role:number) {
+    return this.usersService.remove11(+id, role);
   }
 
   
