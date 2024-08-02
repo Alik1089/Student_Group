@@ -23,7 +23,7 @@ import { RolesGuard } from './roles.guard';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: 'keyboard-cat',
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '1y' },
     }),
   ],
   controllers: [AuthController],

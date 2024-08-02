@@ -120,6 +120,7 @@ export class UsersService {
           surname: true,
           age: true,
           email: true,
+          id:true,
           image: true,
           phoneNumber: true,
           role: true,

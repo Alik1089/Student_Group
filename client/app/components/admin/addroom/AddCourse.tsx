@@ -2,7 +2,7 @@
 import { addCourse } from '@/lib/features/courses/courseSlice';
 import { profileUser } from '@/lib/features/user/userSlice';
 import { useAppDispatch } from '@/lib/hooks';
-import { IAddCourse } from '@/lib/types';
+import { IAddCourse } from '@/lib/types/adds';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'

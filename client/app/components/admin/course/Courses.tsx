@@ -1,8 +1,8 @@
 "use client";
 import {
     delCourseData,
-    getCourseData,
-    selectCourse,
+    getCoursesData,
+    selectCourses,
 } from "@/lib/features/courses/courseSlice";
 import { profileUser } from "@/lib/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -15,7 +15,7 @@ import CourseModal from "./CourseModal";
 function Courses() {
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const course = useAppSelector(selectCourse);
+    const courses = useAppSelector(selectCourses);
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [courseIdex, setJobId] = useState(0);
@@ -23,7 +23,7 @@ function Courses() {
     useEffect(() => {
         dispatch(profileUser())
             .unwrap()
-            .then(() => dispatch(getCourseData()))
+            .then(() => dispatch(getCoursesData()))
             .catch((err) => router.push("/"));
     }, []);
 
@@ -41,6 +41,7 @@ function Courses() {
 
     return (
         <>
+        <h1>Courses</h1>
             <table>
                 <thead>
                     <tr>
@@ -51,7 +52,7 @@ function Courses() {
                     </tr>
                 </thead>
                 <tbody>
-                    {course.map((elm: ICourse) => (
+                    {courses.map((elm: ICourse) => (
                         <tr key={elm.id}>
                             <td>{elm.name}</td>
                             <td>{elm.duration}</td>
@@ -67,7 +68,7 @@ function Courses() {
                                         setIsOpen(true);
                                     }}
                                 >
-                                    Update
+                                    See more
                                 </button>
                             </td>
                         </tr>

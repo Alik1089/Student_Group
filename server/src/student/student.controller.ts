@@ -131,4 +131,9 @@ export class StudentController {
   remove(@Param('id') id: string) {
     return this.studentService.remove(+id);
   }
+
+  @Delete('/group/:id')
+  removeGroup(@Param('id') id: string) {
+    return this.studentService.removeGroup(+id);
+  }
 }

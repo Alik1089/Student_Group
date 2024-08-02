@@ -83,7 +83,9 @@ export const Nav = () => {
                         </>    
                     ) : user.role == 1 ? (
                         <>
-                            <span>teacher</span>
+                         <Link className={` ${pathname === "/homework" ? styles.active : ""}`} href="/profile/teacher/homework">
+                                My students
+                        </Link>  
                         </>
                     ) : user.role == 0 ? (
                         <>

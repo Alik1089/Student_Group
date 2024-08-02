@@ -1,9 +1,8 @@
 .modal {
-    position: relative;
+    position: absolute;
     display: none;
-    width: 60%;
+    width: clamp(150px, 90%, 600px);
     height: 60%;
-    position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
@@ -16,15 +15,28 @@
         background-color: rgb(211, 209, 207);
         position: absolute;
         right: 5px;
+        top: 5px;
     }
     > div {
         background-color: #eefafc;
+        padding: 30px;
         border: 5px outset #aaa;
+    }
+    .grid{
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        >div{
+            padding: 10px;
+        }
+        >div:nth-child(2){
+            border-left: 3px groove ;
+
+        }
     }
 }
 
 .open {
-    display: grid;
+    display: block;
 }
 
 .close{

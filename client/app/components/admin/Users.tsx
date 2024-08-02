@@ -1,11 +1,8 @@
 "use client";
-import { getUsersApi } from "@/lib/features/user/userApi";
 import {
     delUserData,
-    getTeacherData,
     getUsersData,
     profileUser,
-    selectTeachers,
     selectUsers,
 } from "@/lib/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -17,7 +14,6 @@ function Users() {
     const dispatch = useAppDispatch();
     const router = useRouter();
     let users = useAppSelector(selectUsers);
-    let teachers = useAppSelector(selectTeachers)
     console.log(users);
 
     useEffect(() => {
@@ -82,10 +78,10 @@ function Users() {
                                             )}
                                             <td>{elm.phoneNumber}</td>
                                             {elm.role == 1 ? (
-                                                <td>{elm.teacher.salary}$</td>
+                                                <td>{elm.teacher?.salary}$</td>
                                             ) : elm.role == 0 ? (
                                                 <td>
-                                                    {elm.student.group.name}
+                                                    {elm.student?.group?.name}
                                                 </td>
                                             ) : (
                                                 <></>

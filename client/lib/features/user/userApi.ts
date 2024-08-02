@@ -1,7 +1,7 @@
-import { IAddCourse, IAddUser, IUser } from '@/lib/types';
 import  Cookies  from 'js-cookie';
 import { ILogin } from "./../../types/index";
 import { myAxios } from "@/lib/store";
+import { IAddUser } from '@/lib/types/adds';
 
 export const getUsersApi = async (role?:number) => {
     const token = await Cookies.get("token");
@@ -31,6 +31,8 @@ export const delUserApi = async (id:number) => {
 
 export const addSingleUserApi = async (obj:IAddUser) => {
     const token = Cookies.get("token");
+    console.log(obj);
+    
     const {data} = await myAxios.post("/users", obj,{
         headers: { Authorization: `Bearer ${token}` },
     })

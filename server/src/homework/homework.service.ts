@@ -34,17 +34,31 @@ export class HomeworkService {
   }
 
   findAll() {
-    return this.homeworkRepository.find();
+    return this.homeworkRepository.find({
+      relations:{
+        group:true,
+        model:true
+      }
+    });
   }
 
-  async findAllByGroupId(id: number) {
-    const group = await this.groupRepository.findOneBy({ id });
+  async findAllByGroupId(groupId: number, moduleId:number) {
+    const group = await this.groupRepository.findOneBy({id:groupId});
+    const model = await this.modelRepository.findOneBy({id:moduleId});
     if (group) {
-      return await this.homeworkRepository.find({
-        where: {
-          groupId: id,
-        },
-      });
+      if(model){
+        return await this.homeworkRepository.find({
+          where: {
+            groupId: groupId,
+            modelId:moduleId
+          },
+          relations:{
+            model:true
+          }
+        });
+      }else{
+        return "Module is not defined"
+      }
     } else {
       return 'Group is not defined';
     }

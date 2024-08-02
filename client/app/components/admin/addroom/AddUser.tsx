@@ -7,14 +7,15 @@ import {
     addUser,
     profileUser,
 } from "@/lib/features/user/userSlice";
-import { IAddUser, IGroup, IUser } from "@/lib/types";
 import { useRouter } from "next/navigation";
-import { getGroupsData, selectGroup } from "@/lib/features/groups/groupsSlice";
+import { getGroupsData, selectGroups } from "@/lib/features/groups/groupsSlice";
+import { IAddUser } from "@/lib/types/adds";
+import { IGroup } from "@/lib/types";
 
 function AddUser() {
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const groups = useAppSelector(selectGroup);
+    const groups = useAppSelector(selectGroups);
 
     useEffect(() => {
         dispatch(profileUser())
@@ -37,7 +38,7 @@ function AddUser() {
         },
         validationSchema: AddUserSchema,
         onSubmit: (obj: IAddUser) => {
-            dispatch(addUser(obj)).unwrap().then().catch();
+            dispatch(addUser(obj)).unwrap().then(console.log).catch();
         },
     });
     return (
@@ -166,6 +167,7 @@ function AddUser() {
                                     onBlur={formik.handleBlur}
                                     value={formik.values.groupId}
                                 >
+                                    <option value="" hidden> ... </option>
                                     {groups.map((elm: IGroup, i: number) => (
                                         <option key={i} value={elm.id}>
                                             {elm.name}

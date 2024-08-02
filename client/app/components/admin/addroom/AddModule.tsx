@@ -1,12 +1,13 @@
 "use client";
 import {
-    getCourseData,
-    selectCourse,
+    getCoursesData,
+    selectCourses,
 } from "@/lib/features/courses/courseSlice";
 import { addModule } from "@/lib/features/modules/modulesSlice";
 import { profileUser } from "@/lib/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { IAddModule, ICourse } from "@/lib/types";
+import { ICourse } from "@/lib/types";
+import { IAddModule } from "@/lib/types/adds";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -15,7 +16,7 @@ import { AddModuleSchema } from "./addmoduleSchema";
 function AddModule() {
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const courses = useAppSelector(selectCourse);
+    const courses = useAppSelector(selectCourses);
 
 
     useEffect(() => {
@@ -23,7 +24,7 @@ function AddModule() {
             .unwrap()
             .then()
             .catch((err) => router.push("/"));
-        dispatch(getCourseData()).unwrap()
+        dispatch(getCoursesData()).unwrap()
         .then()
         .catch()
     }, []);
@@ -68,6 +69,7 @@ function AddModule() {
                         onBlur={formik.handleBlur}
                         value={formik.values.courseId}
                     >
+                        {/* <option value={0}>Courses...</option> */}
                         {courses.map((elm: ICourse, i: number) => (
                             <option key={i} value={elm.id}>
                                 {elm.name}

@@ -60,7 +60,10 @@ export class ModuleService {
       const course = await this.courseRepository.findOne({
         where: { id: courseId },
       });
-      if(course)return await this.moduleRepository.update(+id, {name, course})
+      if(course){
+        await this.moduleRepository.update(+id, {name, course})
+        return await this.moduleRepository.find();
+      }
       return "That course was undefined"
     }
     return `That id was wrong`;

@@ -6,18 +6,18 @@ import { JoiSchema } from "nestjs-joi"
 
 export class UpdateGroupDto extends PartialType(CreateGroupDto) {
     @ApiProperty()
-    @JoiSchema(Joi.string().required())
+    @JoiSchema(Joi.string().optional())
     name:string
   
     @ApiProperty()
-    @JoiSchema(Joi.number().required())
+    @JoiSchema(Joi.number().optional())
     count:number
 
     @ApiProperty()
-    @JoiSchema(Joi.number().required())
+    @JoiSchema(Joi.number().optional())
     moduleId:number
 
     @ApiProperty()
-    @JoiSchema(Joi.number().required())
+    @JoiSchema(Joi.number().optional())
     teacherId:number
 }

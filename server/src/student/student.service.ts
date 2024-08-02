@@ -143,4 +143,16 @@ export class StudentService {
   remove(id: number) {
     return `This action removes a #${id} student`;
   }
+
+  async removeGroup(id:number){
+    const student = await this.studentRepository.findOne({
+      where: { userId: id },
+    });
+    if (student) {
+      await this.studentRepository.update(id, {group:null})
+      return await this.findAll()
+    } else {
+      return 'Student is not found';
+    }
+  }
 }

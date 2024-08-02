@@ -1,17 +1,25 @@
 "use client";
-import { delModuleData, getModulesData, selectModule } from "@/lib/features/modules/modulesSlice";
+import {
+    delModuleData,
+    getModulesData,
+    selectModules,
+} from "@/lib/features/modules/modulesSlice";
 import { profileUser } from "@/lib/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { IModule } from "@/lib/types";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import ModuleModal from "./ModuleModal";
 
 function Modules() {
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const modules = useAppSelector(selectModule);
+    const modules = useAppSelector(selectModules);
     const pathname = usePathname();
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [moduleIdex, setModuleId] = useState(0);
+
+
 
     useEffect(() => {
         dispatch(profileUser())
@@ -20,8 +28,16 @@ function Modules() {
             .catch((err) => router.push("/"));
     }, []);
 
-    const delGroup = async (id: number) => {
+    const delModule = async (id: number) => {
         await dispatch(delModuleData(+id));
+    };
+
+    const openModal = () => {
+        setIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsOpen(false);
     };
 
     return (
@@ -41,22 +57,31 @@ function Modules() {
                             <td>{elm.name}</td>
                             <td>{elm.course.name}</td>
                             <td>
-                                <button onClick={() => delGroup(elm.id)}>
+                                <button onClick={() => delModule(elm.id)}>
                                     Delete
                                 </button>
                             </td>
                             <td>
-                                <Link
-                                    className={` ${pathname === "/courses"}`}
-                                    href="/profile/admin/courses"
+                                <button
+                                    onClick={() => {
+                                        setModuleId(elm.id);
+                                        setIsOpen(true);
+                                    }}
                                 >
                                     Update
-                                </Link>
+                                </button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            <div>
+                <ModuleModal
+                    isOpen={isOpen}
+                    closeModal={closeModal}
+                    moduleId={moduleIdex}
+                />
+            </div>
         </>
     );
 }

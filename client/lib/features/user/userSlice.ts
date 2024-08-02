@@ -1,4 +1,4 @@
-import { ILogin, IAddUser, ITeacher } from "./../../types/index";
+import { ILogin, ITeacher } from "./../../types/index";
 import { createAppSlice } from "@/lib/createAppSlice";
 import { IUser } from "@/lib/types";
 import {
@@ -9,6 +9,7 @@ import {
     loginUserApi,
     profileUserApi,
 } from "./userApi";
+import { IAddUser } from "@/lib/types/adds";
 
 export interface UserSliceState {
     users: IUser[];
@@ -86,11 +87,6 @@ export const usersSlice = createAppSlice({
             async (obj: IAddUser) => {
                 return await addSingleUserApi(obj);
             },
-            {
-                fulfilled: (state, action) => {
-                    state.users = action.payload;
-                },
-            }
         ),
     }),
     selectors: {

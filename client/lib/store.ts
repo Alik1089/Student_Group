@@ -1,3 +1,4 @@
+import { homeworkSlice } from './features/homeworks/homeworkSlice';
 import { groupsSlice } from './features/groups/groupsSlice';
 import  axios from 'axios';
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
@@ -10,7 +11,7 @@ export const myAxios = axios.create({
   baseURL:"http://localhost:8080"
 })
 
-const rootReducer = combineSlices( usersSlice, modulesSlice, courseSlice, groupsSlice );
+const rootReducer = combineSlices( usersSlice, modulesSlice, courseSlice, groupsSlice, homeworkSlice );
 export type RootState = ReturnType<typeof rootReducer>;
 
 export const makeStore = () => {

@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { GroupController } from './group.controller';
+import { ModuleGroup } from 'src/module-group/entities/module-group.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Group, Teacher, Model])],
+  imports:[TypeOrmModule.forFeature([Group, Teacher, Model, ModuleGroup])],
   controllers: [GroupController],
   providers: [GroupService],
   exports: [GroupService],

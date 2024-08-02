@@ -24,6 +24,10 @@ export class Homework {
   name: string;
 
   @Column()
+  @JoiSchema(Joi.string().required())
+  description: string;
+
+  @Column()
   @JoiSchema(Joi.number().required())
   groupId: number;
 

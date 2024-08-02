@@ -46,7 +46,7 @@ export class ModuleController {
     return this.moduleService.findAll();
   }
 
-  @HasRoles(Role.TEACHER)
+  @HasRoles(Role.TEACHER, Role.ADMIN)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiResponse({ description: "Module show teacher" })
   @ApiBearerAuth('JWT-auth')

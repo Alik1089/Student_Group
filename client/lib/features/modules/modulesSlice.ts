@@ -1,13 +1,17 @@
-import { IModule, IAddModule } from "./../../types/index";
+import { IModule} from "./../../types/index";
 import { createAppSlice } from "@/lib/createAppSlice";
-import { addModuleApi, delModuleApi, getModulesApi } from "./modulesApi";
+import { addModuleApi, delModuleApi, getModuleByIdApi, getModulesApi, updateModuleByIdApi } from "./modulesApi";
+import { IAddModule } from "@/lib/types/adds";
+import { IUpdateModule } from "@/lib/types/updates";
 
 export interface ModuleSliceState {
-    module: IModule[];
+    modules: IModule[];
+    module:IModule
 }
 
 const initialState: ModuleSliceState = {
-    module: [],
+    modules: [],
+    module:{} as IModule
 };
 
 export const modulesSlice = createAppSlice({
@@ -17,6 +21,17 @@ export const modulesSlice = createAppSlice({
         getModulesData: create.asyncThunk(
             async () => {
                 return await getModulesApi();
+            },
+            {
+                fulfilled: (state, action) => {
+                    state.modules = action.payload;
+                },
+            }
+        ),
+
+        getModuleByIdData: create.asyncThunk(
+            async (id: number) => {
+                return await getModuleByIdApi(id);
             },
             {
                 fulfilled: (state, action) => {
@@ -31,7 +46,7 @@ export const modulesSlice = createAppSlice({
             },
             {
                 fulfilled: (state, action) => {
-                    state.module = action.payload;
+                    state.modules = action.payload;
                 },
             }
         ),
@@ -41,16 +56,28 @@ export const modulesSlice = createAppSlice({
             },
             {
                 fulfilled: (state, action) => {
-                    state.module = action.payload;
+                    state.modules = action.payload;
                 },
             }
         ),
+        updateModuleData:create.asyncThunk(
+            async({ id, obj }: { id: number; obj: IUpdateModule|{name:string}|{courseId:number} }) => {
+                return await updateModuleByIdApi(id, obj)
+            },
+            {
+                fulfilled:(state,action) => {
+                    state.modules = action.payload.modules
+                    state.module = action.payload.module
+                }
+            }
+        )
     }),
     selectors: {
-        selectModule: (module) => module.module,
+        selectModules: (modules) => modules.modules,
+        selectModule: (modules) => modules.module,
     },
 });
 
-export const { getModulesData, delModuleData, addModule } =
+export const { getModulesData, delModuleData, addModule, updateModuleData, getModuleByIdData } =
     modulesSlice.actions;
-export const { selectModule } = modulesSlice.selectors;
+export const { selectModules, selectModule } = modulesSlice.selectors;

@@ -39,6 +39,22 @@ export class GroupController {
     return this.groupService.findAll();
   }
 
+  @HasRoles( Role.TEACHER)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({description:"Groups show teacher"})
+  @ApiBearerAuth('JWT-auth')
+  @Get("teacher/:teacherId")
+  async findAllTeacherId(@Param('teacherId') teacherId: string, @Res() res:Response) {
+    try {
+      const data = await this.groupService.findAllByTeacherId(teacherId);
+      return res.status(HttpStatus.CREATED).json(data);
+    } catch (e) {
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: e.message, error: true });
+    }
+  }
+
   @HasRoles(Role.ADMIN, Role.TEACHER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiResponse({description:"Group show  admin"})

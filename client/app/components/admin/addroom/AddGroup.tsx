@@ -1,9 +1,10 @@
 "use client"
 import { addGroup, } from '@/lib/features/groups/groupsSlice';
-import { getModulesData, selectModule } from '@/lib/features/modules/modulesSlice';
+import { getModulesData, selectModules } from '@/lib/features/modules/modulesSlice';
 import { getTeacherData, profileUser, selectTeachers } from '@/lib/features/user/userSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { IAddGroup, IModule, ITeacher } from '@/lib/types';
+import { IModule, ITeacher } from '@/lib/types';
+import { IAddGroup } from '@/lib/types/adds';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
@@ -13,7 +14,7 @@ function AddGroup() {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const teachers = useAppSelector(selectTeachers)
-    const modules = useAppSelector(selectModule)
+    const modules = useAppSelector(selectModules)
 
     useEffect(() => {
         dispatch(profileUser())

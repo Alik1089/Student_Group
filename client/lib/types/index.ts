@@ -1,16 +1,8 @@
-export interface IGroup{
-    count:number
-    id:number
-    name:string
-    teacherId:number
-    teacher:ITeacher
-    module:IModule
-}
-
 export interface ICourse{
     id:number;
     name:string;
     duration:number
+    module:IModule[]
 }
 
 export interface IModule{
@@ -20,31 +12,11 @@ export interface IModule{
     course:ICourse
 }
 
-export interface IAddCourse{
-    name:string;
-    duration:number
-}
-
-export interface IAddModule{
-    name:string;
-    courseId:number;
-}
-
-export interface IAddGroup{
-    name: string
-    teacherId:number
-    count:number
-    moduleId:number
-}
 
 export interface ITeacher{
     userId:number,
     user:IUser
     salary:number
-}
-
-export interface IAddTeacher{
-
 }
 
 export interface IStudent{
@@ -70,17 +42,6 @@ export interface IUser{
     student:IStudent
 }
 
-export interface IAddUser{
-    name: string;
-    surname: string;
-    age: number;
-    email: string;
-    password: string;
-    role: number;
-    phoneNumber: string;
-    salary: number,
-    groupId: number,
-}
 
 
 export interface ILogin{
@@ -93,5 +54,43 @@ export interface IGroup{
     name:string,
     teacherId:number,
     count:number,
+    teacher:ITeacher
+    moduleId:number
+    module:IModule
+    student:IStudent[]
+}
+
+export interface IHomework{
+    id:number,
+    name:string,
+    description:string,
+    groupId:number,
+    modelId:number,
+    group:IGroup,
+    model:IModule,
+}
+
+export interface ICourseModal{
+    isOpen:boolean,
+    closeModal:Function,
+    courseId:number
+}
+
+export interface IGroupModal{
+    isOpen:boolean,
+    closeModal:Function,
+    groupId:number
+}
+
+export interface IModuleModal{
+    isOpen:boolean,
+    closeModal:Function,
+    moduleId:number
+}
+
+export interface IHomewrorkModal{
+    isOpen1:boolean,
+    closeModal:Function,
+    groupId:number
     moduleId:number
 }
