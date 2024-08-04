@@ -5,24 +5,28 @@ import {
     addSingleUserApi,
     delUserApi,
     getTeachersApi,
+    getUserApi,
     getUsersApi,
     loginUserApi,
     profileUserApi,
+    updateNameSurnameApi,
+    updatePasswordApi,
 } from "./userApi";
 import { IAddUser } from "@/lib/types/adds";
+import { IUpdateNameSurname, IUpdatePassword } from "@/lib/types/updates";
 
 export interface UserSliceState {
     users: IUser[];
     user: IUser;
     status: boolean;
-    teachers:ITeacher[]
+    teachers: ITeacher[]
 }
 
 const initialState: UserSliceState = {
     users: [],
     user: {} as IUser,
     status: true,
-    teachers:[]
+    teachers: []
 };
 
 export const usersSlice = createAppSlice({
@@ -30,7 +34,7 @@ export const usersSlice = createAppSlice({
     initialState,
     reducers: (create) => ({
         getUsersData: create.asyncThunk(
-            async (role?:number) => {
+            async (role?: number) => {
                 return await getUsersApi(role);
             },
             {
@@ -40,7 +44,18 @@ export const usersSlice = createAppSlice({
             }
         ),
 
-        getTeacherData:create.asyncThunk(
+        getUserData: create.asyncThunk(
+            async (id: number) => {
+                return await getUserApi(id)
+            },
+            {
+                fulfilled: (state, action) => {
+                    state.user = action.payload;
+                },
+            }
+        ),
+
+        getTeacherData: create.asyncThunk(
             async () => {
                 return await getTeachersApi()
             },
@@ -80,14 +95,40 @@ export const usersSlice = createAppSlice({
                 },
             }
         ),
-        logoutUser:create.reducer((state, action)=>{
+
+        logoutUser: create.reducer((state, action) => {
             state.user = {} as IUser
         }),
+
         addUser: create.asyncThunk(
             async (obj: IAddUser) => {
                 return await addSingleUserApi(obj);
             },
         ),
+
+        changeNameSurnameData: create.asyncThunk(
+            async ({ id, obj }: { id: number, obj: IUpdateNameSurname }) => {
+                return await updateNameSurnameApi(id, obj);
+            },
+            {
+                fulfilled: (state, action) => {
+                    state.users = action.payload;
+                },
+            }
+        ),
+
+        changePasswordData: create.asyncThunk(
+            async ({ id, obj }: { id: number, obj: IUpdatePassword }) => {
+                return await updatePasswordApi(id, obj);
+            },
+            {
+                fulfilled: (state, action) => {
+                    state.users = action.payload;
+                },
+            }
+        ),
+
+
     }),
     selectors: {
         selectUsers: (users) => users.users,
@@ -97,6 +138,16 @@ export const usersSlice = createAppSlice({
     },
 });
 
-export const { getUsersData, loginUser, profileUser, addUser, delUserData, getTeacherData,logoutUser} =
-    usersSlice.actions;
+export const { 
+    getUsersData, 
+    loginUser, 
+    profileUser, 
+    addUser, 
+    delUserData, 
+    getTeacherData, 
+    logoutUser, 
+    getUserData, 
+    changeNameSurnameData,
+    changePasswordData,
+ } = usersSlice.actions;
 export const { selectUsers, selectUser, selectStatus, selectTeachers } = usersSlice.selectors;

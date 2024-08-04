@@ -54,10 +54,7 @@ export class UsersController {
     return this.usersService.findAll(role);
   }
 
-  @HasRoles(Role.ADMIN)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @ApiResponse({description:"user show admin"})
-  @ApiBearerAuth('JWT-auth')
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);

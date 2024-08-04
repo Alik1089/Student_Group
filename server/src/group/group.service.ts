@@ -71,7 +71,23 @@ export class GroupService {
     if(teacher){
       return this.groupRepository.find({where:{
         teacherId
-      }})
+      },
+      relations:{
+        student:{
+          user:true
+        }
+      },
+      select:{
+        student:{
+          userId:true,
+          user: {
+            name: true,
+            surname: true,
+            age:true
+          },
+        }
+      }
+    })
     }else{return "Teacher is not defined"}
   }
 

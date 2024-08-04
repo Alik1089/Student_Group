@@ -12,6 +12,18 @@ export interface IModule{
     course:ICourse
 }
 
+interface IModelExamp{
+    id:number
+    name:string
+    courseId:number
+}
+
+export interface INewModule{
+    groupId:number
+    model:IModelExamp
+    modelId:number
+}
+
 
 export interface ITeacher{
     userId:number,
@@ -92,5 +104,13 @@ export interface IHomewrorkModal{
     isOpen1:boolean,
     closeModal:Function,
     groupId:number
+    moduleId:number
+}
+
+export interface ISearchGroup{
+    groupId:number
+}
+
+export interface ISearchModule{
     moduleId:number
 }

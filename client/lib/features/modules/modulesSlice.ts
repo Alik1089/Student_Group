@@ -1,17 +1,17 @@
-import { IModule} from "./../../types/index";
+import { IModule } from "./../../types/index";
 import { createAppSlice } from "@/lib/createAppSlice";
-import { addModuleApi, delModuleApi, getModuleByIdApi, getModulesApi, updateModuleByIdApi } from "./modulesApi";
+import { addModuleApi, delModuleApi, getModulesByGroupIdApi, getModuleByIdApi, getModulesApi, updateModuleByIdApi } from "./modulesApi";
 import { IAddModule } from "@/lib/types/adds";
 import { IUpdateModule } from "@/lib/types/updates";
 
 export interface ModuleSliceState {
     modules: IModule[];
-    module:IModule
+    module: IModule
 }
 
 const initialState: ModuleSliceState = {
     modules: [],
-    module:{} as IModule
+    module: {} as IModule
 };
 
 export const modulesSlice = createAppSlice({
@@ -40,6 +40,17 @@ export const modulesSlice = createAppSlice({
             }
         ),
 
+        getModulesByGroupIdData: create.asyncThunk(
+            async (id: number) => {
+                return await getModulesByGroupIdApi(id);
+            },
+            {
+                fulfilled: (state, action) => {
+                    state.modules = action.payload;
+                },
+            }
+        ),
+
         delModuleData: create.asyncThunk(
             async (id: number) => {
                 return await delModuleApi(+id);
@@ -60,12 +71,12 @@ export const modulesSlice = createAppSlice({
                 },
             }
         ),
-        updateModuleData:create.asyncThunk(
-            async({ id, obj }: { id: number; obj: IUpdateModule|{name:string}|{courseId:number} }) => {
+        updateModuleData: create.asyncThunk(
+            async ({ id, obj }: { id: number; obj: IUpdateModule | { name: string } | { courseId: number } }) => {
                 return await updateModuleByIdApi(id, obj)
             },
             {
-                fulfilled:(state,action) => {
+                fulfilled: (state, action) => {
                     state.modules = action.payload.modules
                     state.module = action.payload.module
                 }
@@ -78,6 +89,6 @@ export const modulesSlice = createAppSlice({
     },
 });
 
-export const { getModulesData, delModuleData, addModule, updateModuleData, getModuleByIdData } =
+export const { getModulesData, delModuleData, addModule, updateModuleData, getModuleByIdData, getModulesByGroupIdData } =
     modulesSlice.actions;
 export const { selectModules, selectModule } = modulesSlice.selectors;

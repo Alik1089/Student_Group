@@ -138,7 +138,12 @@ export class UsersService {
   }
 
   async findOne(id: number) {
-    return await this.userRepository.findOne({ where: { id } });
+    const user =  await this.userRepository.findOne({ where: { id } });
+    if(user){
+      return user
+    }else{
+      return "User id is wrong"
+    }
   }
   async findOneEmail(emailDto: EmailDto) {
     const { email } = emailDto;

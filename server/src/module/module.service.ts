@@ -5,12 +5,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateModuleDto } from './dto/create-module.dto';
 import { UpdateModuleDto } from './dto/update-module.dto';
 import { Repository } from 'typeorm';
+import { Group } from 'src/group/entities/group.entity';
+import { ModuleGroup } from 'src/module-group/entities/module-group.entity';
 
 @Injectable()
 export class ModuleService {
   constructor(
     @InjectRepository(Model) private moduleRepository: Repository<Model>,
     @InjectRepository(Course) private courseRepository: Repository<Course>,
+    @InjectRepository(Group) private groupRepository: Repository<Group>,
+    @InjectRepository(ModuleGroup) private module_groupRepository: Repository<ModuleGroup>,
   ) {}
 
   async create(createModuleDto: CreateModuleDto) {
@@ -50,6 +54,20 @@ export class ModuleService {
         }
       })
     }else{return "Course id is wrong"}
+  }
+
+  async findAllByGroupId(id:number){
+    const group = await this.groupRepository.findOneBy({id})
+    if(group){
+      return this.module_groupRepository.find({
+        where:{
+          groupId:id
+        },
+        relations:{
+          model:true
+        }
+      })
+    }else{return "group id is wrong"}
   }
 
   async update(id: number, updateModuleDto: UpdateModuleDto) {

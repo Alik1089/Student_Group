@@ -43,13 +43,7 @@ export const homeworkSlice = createAppSlice({
         ),
 
         getHomeworkBYgroupIdData: create.asyncThunk(
-            async ({
-                groupId,
-                moduleId,
-            }: {
-                groupId: number;
-                moduleId: number;
-            }) => {
+            async ({groupId,moduleId,}: {groupId: number;moduleId: number;}) => {
                 return await getHomeworkByGroupIdApi(groupId, moduleId);
             },
             {

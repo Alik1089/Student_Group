@@ -19,6 +19,14 @@ export const getModuleByIdApi = async (id:number) => {
     return data;
 }
 
+export const getModulesByGroupIdApi = async (id:number) => {
+    const token = await Cookies.get("token");
+    const { data } = await myAxios.get("/module/group/"+id,  {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    return data;
+}
+
 export const delModuleApi = async(id:number) => {
     const token = await Cookies.get("token");
     const { data } = await myAxios.delete(`/module/${id}`, {

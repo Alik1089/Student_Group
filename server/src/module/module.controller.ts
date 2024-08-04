@@ -78,6 +78,22 @@ export class ModuleController {
     }
   }
 
+  @HasRoles(Role.TEACHER)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({ description: "Module show teacher" })
+  @ApiBearerAuth('JWT-auth')
+  @Get("group/:id")
+  async findAllByGroupId(@Param('id') id: string, @Res() res: Response) {
+    try {
+      const data = await this.moduleService.findAllByGroupId(+id);
+      return res.status(HttpStatus.CREATED).json(data);
+    } catch (e) {
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: e.message, error: true });
+    }
+  }
+
   @HasRoles(Role.ADMIN)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiResponse({ description: "Module update admin" })
