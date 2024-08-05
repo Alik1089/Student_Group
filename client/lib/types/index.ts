@@ -12,6 +12,12 @@ export interface IModule{
     course:ICourse
 }
 
+export interface IRate{
+    homeworkId:number,
+    studentId:number,
+    rate:number
+}
+
 interface IModelExamp{
     id:number
     name:string
@@ -46,6 +52,7 @@ export interface IUser{
     age: number;
     email: string;
     password: string;
+    image: string;
     role: number;
     phoneNumber: string;
     salary: number,

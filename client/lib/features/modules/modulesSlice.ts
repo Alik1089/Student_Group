@@ -1,17 +1,24 @@
 import { IModule } from "./../../types/index";
 import { createAppSlice } from "@/lib/createAppSlice";
-import { addModuleApi, delModuleApi, getModulesByGroupIdApi, getModuleByIdApi, getModulesApi, updateModuleByIdApi } from "./modulesApi";
+import {
+    addModuleApi,
+    delModuleApi,
+    getModulesByGroupIdApi,
+    getModuleByIdApi,
+    getModulesApi,
+    updateModuleByIdApi,
+} from "./modulesApi";
 import { IAddModule } from "@/lib/types/adds";
 import { IUpdateModule } from "@/lib/types/updates";
 
 export interface ModuleSliceState {
     modules: IModule[];
-    module: IModule
+    module: IModule;
 }
 
 const initialState: ModuleSliceState = {
     modules: [],
-    module: {} as IModule
+    module: {} as IModule,
 };
 
 export const modulesSlice = createAppSlice({
@@ -72,16 +79,22 @@ export const modulesSlice = createAppSlice({
             }
         ),
         updateModuleData: create.asyncThunk(
-            async ({ id, obj }: { id: number; obj: IUpdateModule | { name: string } | { courseId: number } }) => {
-                return await updateModuleByIdApi(id, obj)
+            async ({
+                id,
+                obj,
+            }: {
+                id: number;
+                obj: IUpdateModule | { name: string } | { courseId: number };
+            }) => {
+                return await updateModuleByIdApi(id, obj);
             },
             {
                 fulfilled: (state, action) => {
-                    state.modules = action.payload.modules
-                    state.module = action.payload.module
-                }
+                    state.modules = action.payload.modules;
+                    state.module = action.payload.module;
+                },
             }
-        )
+        ),
     }),
     selectors: {
         selectModules: (modules) => modules.modules,
@@ -89,6 +102,12 @@ export const modulesSlice = createAppSlice({
     },
 });
 
-export const { getModulesData, delModuleData, addModule, updateModuleData, getModuleByIdData, getModulesByGroupIdData } =
-    modulesSlice.actions;
+export const {
+    getModulesData,
+    delModuleData,
+    addModule,
+    updateModuleData,
+    getModuleByIdData,
+    getModulesByGroupIdData,
+} = modulesSlice.actions;
 export const { selectModules, selectModule } = modulesSlice.selectors;

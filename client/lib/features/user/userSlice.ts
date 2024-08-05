@@ -1,9 +1,10 @@
-import { ILogin, ITeacher } from "./../../types/index";
+import { ILogin, IStudent, ITeacher } from "./../../types/index";
 import { createAppSlice } from "@/lib/createAppSlice";
 import { IUser } from "@/lib/types";
 import {
     addSingleUserApi,
     delUserApi,
+    getStudentsByGroupId,
     getTeachersApi,
     getUserApi,
     getUsersApi,
@@ -11,6 +12,7 @@ import {
     profileUserApi,
     updateNameSurnameApi,
     updatePasswordApi,
+    updatePictureData,
 } from "./userApi";
 import { IAddUser } from "@/lib/types/adds";
 import { IUpdateNameSurname, IUpdatePassword } from "@/lib/types/updates";
@@ -19,14 +21,16 @@ export interface UserSliceState {
     users: IUser[];
     user: IUser;
     status: boolean;
-    teachers: ITeacher[]
+    teachers: ITeacher[];
+    students:IStudent[]
 }
 
 const initialState: UserSliceState = {
     users: [],
     user: {} as IUser,
     status: true,
-    teachers: []
+    teachers: [],
+    students: []
 };
 
 export const usersSlice = createAppSlice({
@@ -46,7 +50,7 @@ export const usersSlice = createAppSlice({
 
         getUserData: create.asyncThunk(
             async (id: number) => {
-                return await getUserApi(id)
+                return await getUserApi(id);
             },
             {
                 fulfilled: (state, action) => {
@@ -55,9 +59,20 @@ export const usersSlice = createAppSlice({
             }
         ),
 
+        getStudetsByGroupData : create.asyncThunk(
+            async (id: number) => {
+                return await getStudentsByGroupId(id);
+            },
+            {
+                fulfilled: (state, action) => {
+                    state.students = action.payload;
+                },
+            }
+        ),
+
         getTeacherData: create.asyncThunk(
             async () => {
-                return await getTeachersApi()
+                return await getTeachersApi();
             },
             {
                 fulfilled: (state, action) => {
@@ -97,17 +112,15 @@ export const usersSlice = createAppSlice({
         ),
 
         logoutUser: create.reducer((state, action) => {
-            state.user = {} as IUser
+            state.user = {} as IUser;
         }),
 
-        addUser: create.asyncThunk(
-            async (obj: IAddUser) => {
-                return await addSingleUserApi(obj);
-            },
-        ),
+        addUser: create.asyncThunk(async (obj: IAddUser) => {
+            return await addSingleUserApi(obj);
+        }),
 
         changeNameSurnameData: create.asyncThunk(
-            async ({ id, obj }: { id: number, obj: IUpdateNameSurname }) => {
+            async ({ id, obj }: { id: number; obj: IUpdateNameSurname }) => {
                 return await updateNameSurnameApi(id, obj);
             },
             {
@@ -118,8 +131,19 @@ export const usersSlice = createAppSlice({
         ),
 
         changePasswordData: create.asyncThunk(
-            async ({ id, obj }: { id: number, obj: IUpdatePassword }) => {
+            async ({ id, obj }: { id: number; obj: IUpdatePassword }) => {
                 return await updatePasswordApi(id, obj);
+            },
+            {
+                fulfilled: (state, action) => {
+                    state.users = action.payload;
+                },
+            }
+        ),
+
+        changePictureData: create.asyncThunk(
+            async ({ id, obj }: { id: number; obj: any }) => {
+                return await updatePictureData(id, obj);
             },
             {
                 fulfilled: (state, action) => {
@@ -135,19 +159,23 @@ export const usersSlice = createAppSlice({
         selectUser: (users) => users.user,
         selectStatus: (users) => users.status,
         selectTeachers: (users) => users.teachers,
+        selectStudents: (users) => users.students,
     },
 });
 
-export const { 
-    getUsersData, 
-    loginUser, 
-    profileUser, 
-    addUser, 
-    delUserData, 
-    getTeacherData, 
-    logoutUser, 
-    getUserData, 
+export const {
+    getUsersData,
+    loginUser,
+    profileUser,
+    addUser,
+    delUserData,
+    getTeacherData,
+    logoutUser,
+    getUserData,
     changeNameSurnameData,
     changePasswordData,
- } = usersSlice.actions;
-export const { selectUsers, selectUser, selectStatus, selectTeachers } = usersSlice.selectors;
+    changePictureData,
+    getStudetsByGroupData
+} = usersSlice.actions;
+export const { selectUsers, selectUser, selectStatus, selectTeachers, selectStudents } =
+    usersSlice.selectors;

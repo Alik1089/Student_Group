@@ -82,6 +82,7 @@ export class UsersController {
       },
     },
   })
+  
   @UseInterceptors(FileInterceptor('file', multerOptions))
   @Patch('/pictureupdate/:id')
   async updatepicture(

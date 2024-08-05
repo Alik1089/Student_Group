@@ -36,7 +36,8 @@ export class RateService {
   }
 
   findAll() {
-    return `This action returns all rate`;
+    const rates = this.rateRepository.find()
+    return rates;
   }
 
   findOne(id: number) {

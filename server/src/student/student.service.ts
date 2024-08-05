@@ -106,6 +106,30 @@ export class StudentService {
     }
   }
 
+  async findAllGroupSudentsEx(id: number) {
+    const group = await this.groupRepository.findOneBy({ id });
+    if (group) {
+      const students = await this.studentRepository.find({
+        where: {
+          group,
+        },
+        relations: {
+          user: true,
+        },
+        select: {
+          user: {
+            name: true,
+            surname:true,
+            age:true
+          },
+        },
+      });
+      return students
+    } else {
+      return 'Group id is not defined';
+    }
+  }
+
   async findOne(id: number) {
     const data = await this.studentRepository
       .createQueryBuilder('student')
@@ -144,13 +168,13 @@ export class StudentService {
     return `This action removes a #${id} student`;
   }
 
-  async removeGroup(id:number){
+  async removeGroup(id: number) {
     const student = await this.studentRepository.findOne({
       where: { userId: id },
     });
     if (student) {
-      await this.studentRepository.update(id, {group:null})
-      return await this.findAll()
+      await this.studentRepository.update(id, { group: null });
+      return await this.findAll();
     } else {
       return 'Student is not found';
     }

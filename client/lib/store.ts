@@ -6,12 +6,13 @@ import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import { usersSlice } from './features/user/userSlice';
 import { courseSlice } from './features/courses/courseSlice';
 import { modulesSlice } from './features/modules/modulesSlice';
+import { ratingSlice } from './features/rates/ratesSlice';
 
 export const myAxios = axios.create({
   baseURL:"http://localhost:8080"
 })
 
-const rootReducer = combineSlices( usersSlice, modulesSlice, courseSlice, groupsSlice, homeworkSlice );
+const rootReducer = combineSlices( usersSlice, modulesSlice, courseSlice, groupsSlice, homeworkSlice, ratingSlice );
 export type RootState = ReturnType<typeof rootReducer>;
 
 export const makeStore = () => {

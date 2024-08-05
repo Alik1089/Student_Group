@@ -106,6 +106,22 @@ export class StudentController {
     }
   }
 
+  @Get('/group/:id')
+  async findAllGroupStudents(
+    @Request() req,
+    @Param('id') id: string,
+    @Res() res: Response,
+  ) {
+    try {
+      const data = await this.studentService.findAllGroupSudentsEx(+id);
+      return res.status(HttpStatus.CREATED).json(data);
+    } catch (e) {
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: e.message, error: true });
+    }
+  }
+
   @HasRoles(Role.ADMIN)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiResponse({description:"Student group changed admin"})

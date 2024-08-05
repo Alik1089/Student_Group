@@ -26,15 +26,7 @@ function Login() {
                     console.log(res);
                     Cookies.set("token", res.access_token);
                     dispatch(profileUser())
-                    if (res.role == 0) {
-                        navigate.push("/profile/student");
-                    } else if (res.role == 1) {
-                        navigate.push("/profile/teacher");
-                    } else if (res.role == 2) {
-                        navigate.push("/profile/admin");
-                    }else{
-                        navigate.push("/profile");
-                    }
+                    navigate.push("/profile");
                 })
                 .catch((err) => {
                     formik.setErrors({

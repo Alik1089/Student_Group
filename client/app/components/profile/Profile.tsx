@@ -1,12 +1,15 @@
 "use client"
-import { profileUser } from "@/lib/features/user/userSlice";
-import { useAppDispatch } from "@/lib/hooks";
+import { profileUser, selectUser } from "@/lib/features/user/userSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 function Profile() {
     const dispatch = useAppDispatch();
     const router = useRouter()
+    const user = useAppSelector(selectUser)
+    console.log(user);
+    
 
     useEffect(() => {
         dispatch(profileUser())
@@ -16,7 +19,13 @@ function Profile() {
     },[])
 
   return (
-    <div>Profile</div>
+    <div>Profile
+
+
+      <div>
+        <img src={"http://localhost:8080/"+user.image} alt="" />
+      </div>
+    </div>
   )
 }
 
