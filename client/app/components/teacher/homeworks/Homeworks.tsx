@@ -23,14 +23,16 @@ import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import {
+    AddHomeworkSchema,
     SearchGroupsSchema,
     SearchModulesSchema,
-} from "./SearchStudentsSchema";
+} from "./SchemaConfig";
 import {
     getModulesByGroupIdData,
     selectModules,
 } from "@/lib/features/modules/modulesSlice";
 import {
+    addHomeworkData,
     getHomeworkBYgroupIdData,
     getHomeworkBYIdData,
     selectHomework,
@@ -38,6 +40,8 @@ import {
 } from "@/lib/features/homeworks/homeworkSlice";
 import { getRatesData, selectRates } from "@/lib/features/rates/ratesSlice";
 import { boolean } from "yup";
+import { IAddHomework } from "@/lib/types/adds";
+import RatesModal from "./RatesChangeModal";
 
 function Homeworks() {
     const dispatch = useAppDispatch();
@@ -52,16 +56,15 @@ function Homeworks() {
 
     const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     const [groupId, setGroupId] = useState<number>(0);
+    const [moduleId, setModuleId] = useState<number>(0);
+    const [studentId, setStudentId] = useState<number>(0);
+    const [homeworkId, setHomeworkId] = useState<number>(0);
+    const [grate, setGrate] = useState<number>(0)
     const [group, setGroup] = useState<IGroup[]>([]);
     const [seeRate, setSeeRate] = useState<boolean>(false);
     const [seeHomework, setSeeHomework] = useState<boolean>(false);
-
-    console.log("homework ==->", homework);
-     
-
-    // console.log("homeworks =>", homeworks);
-    // console.log("groups =>",groups);
-    // console.log("group =>", group);
+    const [seeAddHomework, setSeeAddHomework] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(true);
 
     useEffect(() => {
         dispatch(profileUser())
@@ -84,8 +87,6 @@ function Homeworks() {
             dispatch(getStudetsByGroupData(+obj.groupId));
         },
     });
-    // console.log("students", students);
-    // console.log(rates);
 
     const modulesFormik = useFormik({
         initialValues: {
@@ -93,10 +94,27 @@ function Homeworks() {
         },
         validationSchema: SearchModulesSchema,
         onSubmit: (obj: ISearchModule) => {
-            const moduleId = +obj.moduleId;
+            setModuleId(+obj.moduleId);
             const groupex = groups.filter((elm: IGroup) => elm.id == groupId);
             setGroup(groupex);
-            dispatch(getHomeworkBYgroupIdData({ groupId, moduleId }));
+            dispatch(
+                getHomeworkBYgroupIdData({ groupId, moduleId: +obj.moduleId })
+            );
+        },
+    });
+
+    const updateFormik = useFormik({
+        initialValues: {
+            name: "",
+            groupId: 0,
+            moduleId: 0,
+            description: "",
+        },
+        validationSchema: AddHomeworkSchema,
+        onSubmit: (obj: IAddHomework) => {
+            obj.groupId = groupId;
+            obj.moduleId = moduleId;
+            dispatch(addHomeworkData(obj)).unwrap().then(console.log);
         },
     });
 
@@ -115,6 +133,15 @@ function Homeworks() {
         setSeeHomework(!seeHomework);
     };
 
+    const showAddHomework = () => {
+        setSeeAddHomework(!seeAddHomework);
+    };
+
+    const closeModal = () => {
+        setIsOpen(false);
+    };
+console.log(homeworks);
+
     return (
         <>
             <h1>Information about students</h1>
@@ -122,7 +149,9 @@ function Homeworks() {
             <div>
                 {group.length ? (
                     <>
-                        <button>Add Homework</button>
+                        <button onClick={() => showAddHomework()}>
+                            Add Homework
+                        </button>
                         <button onClick={() => showRates()}>See Rates</button>
                         <button onClick={() => showHomework()}>
                             Show Homeworks
@@ -234,14 +263,12 @@ function Homeworks() {
                                                 style={{
                                                     cursor: "pointer",
                                                 }}
-                                                onClick={() =>
-                                                    console.log(
-                                                        "st",
-                                                        elm1.userId,
-                                                        "hm",
-                                                        elm2
-                                                    )
-                                                }
+                                                onClick={() => {
+                                                    setIsOpen(true);
+                                                    setStudentId(+elm1.userId)
+                                                    setHomeworkId(+elm2.id)
+                                                    setGrate(ratingSee( elm2.id,elm1.userId))
+                                                }}
                                             >
                                                 {ratingSee(
                                                     elm2.id,
@@ -287,10 +314,77 @@ function Homeworks() {
                 )}
             </div>
 
-            {homework.id && seeHomework ? <>
-                <p><span>Name: </span>{homework.name}</p>
-                <p><span>Description: </span>{homework.description}</p>
-            </> : <></>}
+            {seeAddHomework ? (
+                <>
+                    <div>
+                        <h3>Add new homework</h3>
+                        <form onSubmit={updateFormik.handleSubmit}>
+                            <>
+                                <div>
+                                    {/* <label htmlFor="name">Name</label> */}
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        onChange={updateFormik.handleChange}
+                                        onBlur={updateFormik.handleBlur}
+                                        value={updateFormik.values.name}
+                                    />
+                                    {updateFormik.touched.name &&
+                                    updateFormik.errors.name ? (
+                                        <div>{updateFormik.errors.name}</div>
+                                    ) : null}
+                                </div>
+
+                                <div>
+                                    {/* <label htmlFor="description">Description</label> */}
+                                    <textarea
+                                        id="description"
+                                        name="description"
+                                        onChange={updateFormik.handleChange}
+                                        onBlur={updateFormik.handleBlur}
+                                        value={updateFormik.values.description}
+                                    />
+                                    {updateFormik.touched.description &&
+                                    updateFormik.errors.description ? (
+                                        <div>
+                                            {updateFormik.errors.description}
+                                        </div>
+                                    ) : null}
+                                </div>
+                            </>
+                            <button type="submit">Add</button>
+                        </form>
+                    </div>
+                </>
+            ) : (
+                <></>
+            )}
+
+            {homework.id && seeHomework ? (
+                <>
+                    <p>
+                        <span>Name: </span>
+                        {homework.name}
+                    </p>
+                    <p>
+                        <span>Description: </span>
+                        {homework.description}
+                    </p>
+                </>
+            ) : (
+                <></>
+            )}
+
+            <div>
+                <RatesModal
+                    isOpen={isOpen}
+                    closeModal={closeModal}
+                    studentId={studentId}
+                    homeworkId={homeworkId}
+                    grate={grate}
+                />
+            </div>
         </>
     );
 }

@@ -27,6 +27,13 @@ export interface IAddUser{
     groupId: number,
 }
 
+export interface IAddHomework {
+    name:string,
+    groupId:number,
+    moduleId:number,
+    description:string
+}
+
 export interface IAddTeacher{
     
 }

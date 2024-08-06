@@ -131,15 +131,26 @@ export class StudentService {
   }
 
   async findOne(id: number) {
-    const data = await this.studentRepository
-      .createQueryBuilder('student')
-      .where('student.userId=:id', { id })
-      .innerJoinAndSelect('student.rate', 'rate')
-      .select('AVG(rate.rate)', 'avg')
-      .getRawOne();
-    console.log(data);
-
-    return data;
+    const student = await this.studentRepository.findOne({
+      where:{
+        userId:id
+      },
+      relations:{
+        user:true
+      },
+      select:{
+        user:{
+          name:true,
+          surname:true,
+          age:true
+        }
+      }
+    })
+    if(student){
+      return student;
+    }else{
+      return "Student Id is not defined"
+    }
   }
 
   async update(id: number, updateStudentDto: UpdateStudentDto) {

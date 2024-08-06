@@ -22,53 +22,77 @@ export class HomeworkService {
   ) {}
 
   async create(createHomeworkDto: CreateHomeworkDto) {
-    const { name, groupId } = createHomeworkDto;
-    const group = await this.groupRepository.findOne({
-      where: { id: groupId },
+    const { groupId, moduleId, name, description } = createHomeworkDto;
+    const homeworks = await this.homeworkRepository.find({
+      where: {
+        groupId: groupId,
+        modelId: moduleId,
+      },
     });
-    if (group) {
-      return await this.homeworkRepository.save(createHomeworkDto);
+    if (homeworks.length == 12) {
+      return 'Count of homework completed';
     } else {
-      return 'Group is not defined';
+      const group = await this.groupRepository.findOne({
+        where: { id: groupId },
+      });
+      if (group) {
+        const module = await this.modelRepository.findOne({
+          where: { id: moduleId },
+        });
+        if (module) {
+          await this.homeworkRepository.save({
+            group, modelId:moduleId,name, description 
+          });
+          return true;
+        } else {
+          return 'Module is not found';
+        }
+      } else {
+        return 'Group is not defined';
+      }
     }
   }
 
   findAll() {
     return this.homeworkRepository.find({
-      relations:{
-        group:true,
-        model:true
-      }
+      relations: {
+        group: true,
+        model: true,
+      },
     });
   }
 
-  async findAllByGroupId(groupId: number, moduleId:number) {
-    const group = await this.groupRepository.findOneBy({id:groupId});
-    const model = await this.modelRepository.findOneBy({id:moduleId});
+  async findAllByGroupId(groupId: number, moduleId: number) {
+    const group = await this.groupRepository.findOneBy({ id: groupId });
+    const model = await this.modelRepository.findOneBy({ id: moduleId });
     if (group) {
-      if(model){
+      if (model) {
         return await this.homeworkRepository.find({
           where: {
             groupId: groupId,
-            modelId:moduleId
+            modelId: moduleId,
           },
-          relations:{
-            model:true
-          }
+          relations: {
+            model: true,
+          },
         });
-      }else{
-        return "Module is not defined"
+      } else {
+        return 'Module is not defined';
       }
     } else {
       return 'Group is not defined';
     }
   }
 
-  async findAllByModelId(id:number){
-    const homework = await this.homeworkRepository.find({where:{modelId:id}})
-    if (homework){
-      return homework
-    }else{return "homework is not found"}
+  async findAllByModelId(id: number) {
+    const homework = await this.homeworkRepository.find({
+      where: { modelId: id },
+    });
+    if (homework) {
+      return homework;
+    } else {
+      return 'homework is not found';
+    }
   }
 
   async findOne(id: number) {
@@ -85,11 +109,11 @@ export class HomeworkService {
   }
 
   async remove(id: number) {
-    const homework = await this.homeworkRepository.findOneBy({id})
-    if(homework){
-      return await this.homeworkRepository.delete(id)
-    }else{
-      return "Homework is not defined"
-    } 
+    const homework = await this.homeworkRepository.findOneBy({ id });
+    if (homework) {
+      return await this.homeworkRepository.delete(id);
+    } else {
+      return 'Homework is not defined';
+    }
   }
 }

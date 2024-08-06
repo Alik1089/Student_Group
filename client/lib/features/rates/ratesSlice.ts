@@ -1,4 +1,4 @@
-import { getRatesApi, getRatesByIdApi } from './ratesApi';
+import { delRateApi, getRatesApi, getRatesByIdApi } from './ratesApi';
 import { IModule, IRate } from "./../../types/index";
 import { createAppSlice } from "@/lib/createAppSlice";
 
@@ -37,6 +37,12 @@ export const ratingSlice = createAppSlice({
                 },
             }
         ),
+
+        delRateData :create.asyncThunk(
+            async ({studentId, homeworkId}:{studentId:number, homeworkId:number})=>{
+                return await delRateApi(studentId, homeworkId)
+            }
+        )
     }),
     selectors: {
         selectRates: (rates) => rates.rates,
@@ -47,5 +53,6 @@ export const ratingSlice = createAppSlice({
 export const {
     getRatesData,
     getRateByIdData,
+    delRateData
 } = ratingSlice.actions;
-export const { selectRates, selectRate } = ratingSlice.selectors;
+export const { selectRates, selectRate,  } = ratingSlice.selectors;

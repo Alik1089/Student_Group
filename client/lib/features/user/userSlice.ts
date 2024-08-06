@@ -4,6 +4,7 @@ import { IUser } from "@/lib/types";
 import {
     addSingleUserApi,
     delUserApi,
+    getStudentByIdApi,
     getStudentsByGroupId,
     getTeachersApi,
     getUserApi,
@@ -23,6 +24,7 @@ export interface UserSliceState {
     status: boolean;
     teachers: ITeacher[];
     students:IStudent[]
+    student:IStudent
 }
 
 const initialState: UserSliceState = {
@@ -30,7 +32,8 @@ const initialState: UserSliceState = {
     user: {} as IUser,
     status: true,
     teachers: [],
-    students: []
+    students: [],
+    student:{} as IStudent
 };
 
 export const usersSlice = createAppSlice({
@@ -66,6 +69,17 @@ export const usersSlice = createAppSlice({
             {
                 fulfilled: (state, action) => {
                     state.students = action.payload;
+                },
+            }
+        ),
+
+        getStudentsByIdData:create.asyncThunk(
+            async(id:number) => {
+                return await getStudentByIdApi(id)
+            },
+            {
+                fulfilled: (state, action) => {
+                    state.student = action.payload;
                 },
             }
         ),
@@ -160,6 +174,7 @@ export const usersSlice = createAppSlice({
         selectStatus: (users) => users.status,
         selectTeachers: (users) => users.teachers,
         selectStudents: (users) => users.students,
+        selectStudent: (users) => users.student,
     },
 });
 
@@ -175,7 +190,7 @@ export const {
     changeNameSurnameData,
     changePasswordData,
     changePictureData,
-    getStudetsByGroupData
+    getStudetsByGroupData,getStudentsByIdData
 } = usersSlice.actions;
-export const { selectUsers, selectUser, selectStatus, selectTeachers, selectStudents } =
+export const { selectUsers, selectUser, selectStatus, selectTeachers, selectStudents, selectStudent } =
     usersSlice.selectors;

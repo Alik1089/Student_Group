@@ -24,8 +24,6 @@ function Homeworks() {
             .catch((err) => router.push("/"));
     }, []);
 
-    console.log(homeworks);
-
     const closeModal = () => {
         setIsOpen(false);
     };

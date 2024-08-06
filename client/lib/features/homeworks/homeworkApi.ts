@@ -1,3 +1,5 @@
+import { IAddHomework } from './../../types/adds/index';
+import { IHomework } from './../../types/index';
 import  Cookies  from 'js-cookie';
 import { myAxios } from "@/lib/store";
 
@@ -21,6 +23,14 @@ export const getHomeworkByIdApi = async (id:number) => {
 export const getHomeworkByGroupIdApi = async (groupId:number, moduleId:number) => {
     const token = await Cookies.get("token");
     const { data } = await myAxios.get("/homework/group_module/"+groupId+"/"+moduleId,  {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    return data;
+}
+
+export const addHomeworkApi = async (obj:IAddHomework) => {
+    const token = await Cookies.get("token");
+    const { data } = await myAxios.post("/homework", obj , {
         headers: { Authorization: `Bearer ${token}` },
     });
     return data;

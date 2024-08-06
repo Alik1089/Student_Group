@@ -1,6 +1,8 @@
+import { IAddHomework } from '@/lib/types/adds';
 import { createAppSlice } from "@/lib/createAppSlice";
 import { IHomework } from "@/lib/types";
 import {
+    addHomeworkApi,
     getHomeworkByGroupIdApi,
     getHomeworkByIdApi,
     getHomeworksApi,
@@ -33,7 +35,9 @@ export const homeworkSlice = createAppSlice({
 
         getHomeworkBYIdData: create.asyncThunk(
             async (id: number) => {
-                return await getHomeworkByIdApi(id);
+                console.log(id);
+                
+                return await getHomeworkByIdApi(+id);
             },
             {
                 fulfilled: (state, action) => {
@@ -53,6 +57,14 @@ export const homeworkSlice = createAppSlice({
                 },
             }
         ),
+
+        addHomeworkData: create.asyncThunk(
+            async (obj:IAddHomework) => {
+                console.log(obj);
+                
+                return await addHomeworkApi(obj)
+            }
+        )
 
         // delModuleData: create.asyncThunk(
         //     async (id: number) => {
@@ -96,5 +108,6 @@ export const {
     getHomeworkBYgroupIdData,
     getHomeworkBYIdData,
     getHomeworksData,
+    addHomeworkData,
 } = homeworkSlice.actions;
 export const { selectHomeworks, selectHomework } = homeworkSlice.selectors;

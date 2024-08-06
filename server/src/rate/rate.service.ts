@@ -64,9 +64,10 @@ export class RateService {
       where: { homeworkId, studentId },
     });
     if (rate) {
-      return await this.rateRepository.delete({ homeworkId, studentId });
+      await this.rateRepository.delete({ homeworkId, studentId });
+      return true;
     } else {
-      return 'Doesnt have that combination';
+      return false;
     }
   }
 }

@@ -18,3 +18,11 @@ export const getRatesByIdApi = async (id:number) => {
     return data;
 };
 
+export const delRateApi = async (studentId:number, homeworkId:number) => {
+    const token = await Cookies.get("token");
+    const { data } = await myAxios.delete("/rate/"+studentId+"/"+homeworkId, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    return data;
+}
+

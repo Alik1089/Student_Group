@@ -36,11 +36,17 @@ export class Homework {
   modelId:number
 
 
-  @ManyToOne((type) => Group, (group) => group.homework)
+  @ManyToOne((type) => Group, (group) => group.homework, {
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   @JoinColumn({name:"groupId"})
   group: Group;
 
-  @ManyToOne((type) => Model, (module) => module.homework)
+  @ManyToOne((type) => Model, (module) => module.homework, {
+    onDelete:"CASCADE",
+    onUpdate:"CASCADE"
+  })
   @JoinColumn({name:"modelId"})
   model: Model;
 

@@ -114,6 +114,14 @@ export interface IHomewrorkModal{
     moduleId:number
 }
 
+export interface IRatesModal{
+    isOpen:boolean,
+    closeModal:Function,
+    studentId:number
+    homeworkId:number
+    grate:number
+}
+
 export interface ISearchGroup{
     groupId:number
 }

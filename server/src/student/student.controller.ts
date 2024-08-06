@@ -47,7 +47,11 @@ export class StudentController {
   @ApiBearerAuth('JWT-auth')
   @Get(':id')
   findOne(@Request() req, @Param('id') id: string) {
-    return this.studentService.findOne(req.user.id);
+    if(id){
+      return this.studentService.findOne(+id);
+    }else{
+      return this.studentService.findOne(req.user.id);
+    }
   }
 
   @HasRoles(Role.STUDENT)

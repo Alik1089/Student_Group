@@ -76,6 +76,19 @@ export const getStudentsByGroupId = async (id: number) => {
         return true;
     }
 };
+
+export const getStudentByIdApi = async (id:number) => {
+    const token = Cookies.get("token");
+    try {
+        const { data } = await myAxios.get(`/student/` + id, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        return data;
+    } catch (e) {
+        return true;
+    }
+};
+
 export const profileUserApi = async () => {
     const token = Cookies.get("token");
     try {
